@@ -1,0 +1,18 @@
+const express = require('express')
+const authController = require('../controllers/auth-controller')
+const router = express.Router()
+const signUpSchema = require('../validator/auth-validator')
+const validate = require('../middleware/validate-middleware')
+const authMiddleware = require("../middleware/auth-middleware")
+
+router.route('/').get(authController.home)
+router.route('/register').post(validate(signUpSchema), authController.register)
+router.route('/login').post(authController.login)
+router.route('/getdetail').post(authController.getdetail)
+
+
+// creating route for the user, if they are authorised
+
+router.route('/user').get(authMiddleware, authController.user)
+
+module.exports = router
