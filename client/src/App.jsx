@@ -7,6 +7,7 @@ import ErrorPage from "./pages/ErrorPage";
 import Login from "./pages/Login";
 import LogOut from "./pages/LogOut";
 import Relax from "./pages/Relax";
+import ContactUs from "./pages/ContactUs";
 
 const App = () => {
   const {isLoggedIn} = useAuth()
@@ -25,6 +26,7 @@ const App = () => {
                 <Route path="/relax" element={<ErrorPage />} />
             )
           }
+          <Route path="/contact" element={<ContactUs />} />
           <Route path="/logout" element={<LogOut />} />
           <Route path="/*" element={<ErrorPage />} />
         </Routes>

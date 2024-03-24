@@ -1,6 +1,6 @@
 const { z } = require("zod");
 
-// creating an object schema
+
 
 const signUpSchema = z.object({
   firstName: z

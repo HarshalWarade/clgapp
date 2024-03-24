@@ -1,5 +1,8 @@
 const User = require('../models/user-model')
+const Contact = require('../models/contact-model')
+const Blog = require('../models/blog-model')
 const bcrypt = require('bcryptjs')
+
 
 const home = async (req, res) => {
     try {
@@ -8,6 +11,43 @@ const home = async (req, res) => {
         console.log(error);
     }
 }
+const requestcontact = async (req, res) => {
+    try {
+        const {username, email, message} = req.body
+        const sendMessage = await Contact.create({username, email, message})
+
+        return res.status(200).json({msg: "Message sent successfully!"})
+    } catch (err) {
+        return res.status(500).json({msg: err})
+    }
+}
+
+const sendPost = async (req, res) => {
+    try {
+        console.log(req.body)
+        const { title, category, content } = req.body;
+        console.log('Received title:', title);
+        console.log('Received category:', category);
+        console.log('Received content:', content);
+
+        const newBlog = new Blog({
+            title,
+            category,
+            content: content,
+            author: req.user._id, // Assuming req.user contains the logged-in user's information
+            blogCreatedAt: new Date(), // Assuming you want to set the creation date to the current date
+            comments: [], // Initialize comments and likes arrays as empty
+            likes: [],
+        });
+        await newBlog.save();
+        console.log("Successfully posted");
+
+        return res.status(201).json({ msg: "Blog posted successfully", blogId: newBlog._id });
+    } catch (err) {
+        return res.status(500).json({ msg: err });
+    }
+};
+
 
 const register = async (req, res) => {
     try {
@@ -72,11 +112,43 @@ const login = async (req, res) => {
 const user = async (req, res) => {
     try {
         const userData = req.user
-        console.log(userData)
-        return res.status(200).json({msg: userData})
+        return res.status(200).json(userData)
     } catch (err) {
         console.log("Error from authorised route: ", err)
     }
 }
 
-module.exports = { home, register, getdetail, login, user }
+const getPostCount = async (req, res) => {
+    try {
+        const userID = req.user._id
+        const blogs = await Blog.find({author: userID})
+        return res.status(200).json({count: blogs.length})
+    } catch (err) {
+        console.log("Error fetching the post counts: ", err)
+    }
+}
+
+const getBlogs = async (req, res) => {
+    try {
+        const userID = req.user._id
+        const blogs = await Blog.find({author: userID})
+        return res.status(200).json({blogs: blogs})
+    } catch (err) {
+        return res.status(500).json({msg: err})
+    }
+}
+
+
+
+// ************ STRICT WARNING >>> DELETE BEFORE PRODUCTION ****************************
+
+const delabl = async (req, res) => {
+    try {
+        await Blog.deleteMany({});
+        return res.status(200).json({msg: "deleted!"})
+    } catch (err) {
+        return res.status(500).json({msg: err})
+    }
+}
+
+module.exports = { home, register, getdetail, login, user, requestcontact, sendPost, getPostCount, getBlogs , delabl}

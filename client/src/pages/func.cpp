@@ -1,22 +1,24 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-int mul(int num) {
-    
-
-    num = num + num;
-
-    return num;
-}
-
-
 int main() {
 
-    int a = 5;
+    int n = 5;
 
-    int ans = mul(a);
+    int sum = 0;
 
-    cout << ans << endl;
+    for(int i = 1; i <= 5; i++) {
+        sum = sum + i;
+    }
+    
+    cout << sum << endl;
 
     return 0;
 }
+
+
+
+
+
+
+

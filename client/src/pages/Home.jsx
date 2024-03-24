@@ -3,8 +3,12 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
 import CreativeCard from "../components/CreativeCard";
+import { useAuth } from "../store/auth";
 
 const Home = () => {
+
+  const {isLoggedIn} = useAuth()
+
   // const [adActive, setAdActive] = useState(true);
 
   // const handleClose = () => {
@@ -50,16 +54,16 @@ const Home = () => {
           </p>
           <div className="flex justify-evenly items-center content-center gap-7 md:gap-0 md:w-1/3">
             <Link
-              to="/"
+              to={isLoggedIn ? "/relax" : "/login"}
               className="bg-orange-600 p-2 rounded-md text-white hover:bg-orange-700"
             >
-              About the developer
+              Enter Colidea
             </Link>
             <Link
               to="/"
               className="p-2 rounded-md border border-orange-500 text-orange-600"
             >
-              Learn More
+              About the Developer
             </Link>
           </div>
         </div>

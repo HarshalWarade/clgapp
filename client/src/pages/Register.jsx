@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useAuth } from "../store/auth";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -16,7 +18,7 @@ const Register = () => {
     username: "",
   });
 
-  const {storeTokenInStorage} = useAuth()
+  const { storeTokenInStorage } = useAuth();
 
   // handling inputs -> using by default event
   const handleInput = (e) => {
@@ -46,13 +48,20 @@ const Register = () => {
       });
 
       if (response.ok) {
-        console.log("Successfully Registered");
-        const res_data = await response.json()
-        console.log("Response from the server: ", res_data)
+        toast.success("Registered Successfully! You'll be naviagted to login page within 12 seconds.", {
+          position: "top-right",
+          autoClose: 12000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        const res_data = await response.json();
+        console.log("Response from the server: ", res_data);
 
         // storing token in the local storage
-        storeTokenInStorage(res_data.token)
-
+        storeTokenInStorage(res_data.token);
 
         setUser({
           firstName: "",
@@ -61,7 +70,9 @@ const Register = () => {
           password: "",
           username: "",
         });
-        navigate("/login");
+        setTimeout(() => {
+          navigate("/login");
+        }, 12000);
       }
 
       // console.log(response);
@@ -164,12 +175,15 @@ const Register = () => {
                 />
               </div>
 
-              <button
-                type="submit"
-                className="bg-orange-500 text-white p-2 rounded-md hover:bg-orange-600 focus:outline-none"
-              >
-                Register
-              </button>
+              <div className="flex items-center content-center gap-5">
+                <button
+                  type="submit"
+                  className="bg-orange-500 text-white p-2 rounded-md hover:bg-orange-600 focus:outline-none"
+                >
+                  Register
+                </button>
+                <NavLink className={`text-blue-500 underline`} to={`/login`}>Already a user</NavLink>
+              </div>
             </form>
           </div>
         </div>
@@ -184,6 +198,11 @@ const Register = () => {
         </div>
       </div>
       <Footer />
+      <ToastContainer
+        position="top-left"
+        autoClose={12000}
+        hideProgressBar={false}
+      />
     </>
   );
 };

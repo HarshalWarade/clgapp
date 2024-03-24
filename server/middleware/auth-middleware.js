@@ -17,15 +17,7 @@ const authMiddleware = async (req, res, next) => {
         
         const isDecoded = jwt.verify(jwtToken, process.env.JWT_KEY)
 
-        console.log(isDecoded)
-
         const userData = await User.findOne({email: isDecoded.email})
-
-        if(userData) {
-            console.log("Authorized User found successfully")
-        } else {
-            console.log("Error fetching the authorized user")
-        }
 
         req.user = userData
         req.token = jwtToken

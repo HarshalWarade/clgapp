@@ -12,9 +12,13 @@
   "dependencies": {
     "@heroicons/react": "^2.1.1",
     "@material-tailwind/react": "^2.1.9",
+    "codemirror": "^5.65.16",
     "react": "^18.2.0",
+    "react-codemirror2": "^7.3.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.22.3"
+    "react-quill": "^2.0.0",
+    "react-router-dom": "^6.22.3",
+    "react-toastify": "^10.0.4"
   },
   "devDependencies": {
     "@types/react": "^18.2.56",

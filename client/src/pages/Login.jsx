@@ -1,32 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom"; // Import NavLink
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useAuth } from "../store/auth";
+import { Navigate, useNavigate } from "react-router-dom";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const Login = () => {
-  // initial stages bandiye.. later edit krnaar...
-  const [user, setUser] = useState({
-    email: "",
-    password: "",
-  });
+  const navigate = useNavigate();
+  const { isLoggedIn, storeTokenInStorage } = useAuth();
+  const [user, setUser] = useState({ email: "", password: "" });
 
-  const {storeTokenInStorage} = useAuth()
+  useEffect(() => {
+    if (isLoggedIn) {
+      toast.success(
+        <NavLink to="/relax">
+          Login Successful. Click on this message to enter Colidea platform
+        </NavLink>,
+        {
+          position: "top-right",
+          autoClose: 12000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      );
+      setUser({ email: "", password: "" });
+    } else {
+      toast.info("Please fill this form to continue", {
+        position: "top-right",
+        autoClose: 12000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  }, [isLoggedIn]);
 
-  // handling inputs -> using by default event
   const handleInput = (e) => {
-    // e.preventDefault() // -> for submission only... field saathi naste
-    let name = e.target.name;
-    let value = e.target.value;
-    // console.log(value)
-    setUser({
-      ...user,
-      [name]: value,
-    });
+    const { name, value } = e.target;
+    setUser({ ...user, [name]: value });
   };
 
-  // handling form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const response = await fetch(`http://localhost:3000/api/auth/login`, {
         method: "POST",
@@ -37,17 +60,21 @@ const Login = () => {
       });
 
       if (response.ok) {
-        alert("Login Successful");
-        location.reload()
-        // storing token in the local storage
-        const res_data = await response.json()
+        const res_data = await response.json();
         storeTokenInStorage(res_data.token);
-        setUser({
-          email: "",
-          password: "",
-        });
+        location.reload();
+
+        navigate("/relax");
       } else {
-        alert("Failed to login, try again with correct credentials!");
+        toast.error("Failed to login, try again with correct credentials!", {
+          position: "top-right",
+          autoClose: 12000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       }
     } catch (error) {
       console.log(error);
@@ -58,11 +85,10 @@ const Login = () => {
     <>
       <Navbar />
       <div className="flex justify-center items-center h-screen bg-gray-100">
-        {/* Registration Form */}
         <div className="w-1/3 mx-4">
           <div className="bg-white p-6 rounded-md shadow-md">
             <h2 className="text-2xl font-semibold mb-6">
-              Welcome Back ! Please log in
+              Welcome Back! Please log in
             </h2>
             <form autoComplete="off" onSubmit={handleSubmit}>
               <div className="mb-4">
@@ -99,26 +125,33 @@ const Login = () => {
                 />
               </div>
 
-              <button
-                type="submit"
-                className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 focus:outline-none"
-              >
-                Log In
-              </button>
+              <div className="flex gap-5 items-center content-center">
+                <button
+                  type="submit"
+                  className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 focus:outline-none"
+                >
+                  Log In
+                </button>
+                <NavLink to={"/getStarted"} className={`bg-blue-100 p-2 rounded-md border border-blue-600 text-blue-600`}>New to Colidea</NavLink>
+              </div>
             </form>
           </div>
         </div>
-
-        {/* Additional Information */}
+r
         <div className="bg-gray-50 p-6 rounded-md shadow-md ml-4">
           <h2 className="text-xl font-semibold mb-4">Hello, Welcome Back</h2>
           <p className="text-gray-700">
-            We recommend log in again to secure your account, and maintain the
-            policies of security.
+            We recommend logging in again to secure your account and maintain
+            security policies.
           </p>
         </div>
       </div>
       <Footer />
+      <ToastContainer
+        position="top-left"
+        autoClose={12000}
+        hideProgressBar={false}
+      />
     </>
   );
 };
