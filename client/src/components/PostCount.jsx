@@ -17,7 +17,7 @@ const PostCount = () => {
 
         if (response.ok) {
           const data = await response.json();
-          setCount(data.count); // Assuming the response contains a "count" field
+          setCount(data.count);
         } else {
           console.error('Failed to fetch post count.');
         }
@@ -26,14 +26,12 @@ const PostCount = () => {
       }
     };
 
-    fetchPostCount(); // Initial fetch
+    fetchPostCount();
 
-    // Polling interval to fetch updated count every 30 seconds (adjust as needed)
-    const intervalId = setInterval(fetchPostCount, 30000); // 30 seconds
+    const intervalId = setInterval(fetchPostCount, 30000);
 
-    // Clean up the interval on component unmount
     return () => clearInterval(intervalId);
-  }, [token]); // Include token in the dependency array
+  }, [token]);
 
   return <>{count}</>;
 };

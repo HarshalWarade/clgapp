@@ -86,7 +86,7 @@ const Explore = () => {
       {loading ? ( // Conditional rendering based on loading state
         <div className="flex items-center justify-center content-center min-h-screen">
           <img
-            src="https://i.pinimg.com/originals/c7/e1/b7/c7e1b7b5753737039e1bdbda578132b8.gif"
+            src="https://cdn.dribbble.com/users/2015153/screenshots/6592242/progess-bar2.gif"
             alt="loading..."
           />
         </div>

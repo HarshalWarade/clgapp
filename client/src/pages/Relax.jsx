@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useAuth } from "../store/auth";
 import Footer from "../components/Footer";
-// import CreativeCard from "../components/CreativeCard";
 import { NavLink } from "react-router-dom";
 import DarkSwitch from "./DarkSwitch";
 import { DarkModeContext } from "../context/DarkModeContext";
@@ -42,59 +41,8 @@ const Relax = () => {
 
   const { isDarkMode } = useContext(DarkModeContext);
 
-  // console.log("Dark mode state: ", isDarkMode);
-
   return (
     <>
-      {/* <nav
-        className={`sm:flex border-slate-500 md:flex md:items-center md:justify-evenly h-auto py-4 ${
-          isDarkMode ? `bg-slate-900 border-none` : `bg-white`
-        }`}
-      >
-        <div>
-          <h1
-            className={`text-2xl font-bold ${isDarkMode ? `text-gray-400` : ``}`}
-          >
-            Colidea <i className="fa-solid fa-objects-column"></i>
-          </h1>
-        </div>
-
-        <div className="flex gap-10">
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              `${isActive ? "text-sky-600/75 font-bold" : "text-gray-500"}`
-            }
-          >
-            Home
-          </NavLink>
-          <NavLink
-            to="/about"
-            className={({ isActive }) =>
-              `${isActive ? "text-sky-600/75 font-bold" : "text-gray-500"}`
-            }
-          >
-            About
-          </NavLink>
-          <NavLink
-            to="/relax"
-            className={({ isActive }) =>
-              `${isActive ? "text-sky-600/75 font-bold" : "text-gray-500"}`
-            }
-          >
-            Profile
-          </NavLink>
-          <NavLink
-            to="/contact"
-            className={({ isActive }) =>
-              `${isActive ? "text-sky-600/75 font-bold" : "text-gray-500"}`
-            }
-          >
-            Contact
-          </NavLink>
-        </div>
-        <DarkSwitch />
-      </nav> */}
       <Navbar />
       <div className={`py-9 px-20 ${isDarkMode ? `bg-black` : `bg-gray-100`}`}>
         <div
@@ -150,18 +98,10 @@ const Relax = () => {
                       ? `hover:bg-sky-500/75 hover:text-white`
                       : `hover:bg-sky-100/75`
                   }`}
+                  to={`http://localhost:5173/profile/${user._id}`}
                 >
                   Public View
                 </NavLink>
-                {/* <NavLink
-                  className={`border border-sky-600/75 text-sky-600/75 py-2 px-3 flex items-center justify-center rounded-full ${
-                    isDarkMode
-                      ? `hover:bg-sky-500/75 hover:text-white`
-                      : `hover:bg-sky-100/75`
-                  }`}
-                >
-                  More
-                </NavLink> */}
                 <NavLink
                   className={`border border-sky-600/75 text-sky-600/75 py-2 px-3 flex items-center justify-center rounded-full ${
                     isDarkMode
