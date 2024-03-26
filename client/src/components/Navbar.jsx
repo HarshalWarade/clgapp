@@ -6,7 +6,7 @@ import { DarkModeContext } from "../context/DarkModeContext";
 
 const Navbar = () => {
   const { isLoggedIn } = useAuth();
-  const {isDarkMode} = useContext(DarkModeContext)
+  const { isDarkMode } = useContext(DarkModeContext);
   return (
     <>
       <nav
@@ -17,7 +17,9 @@ const Navbar = () => {
       >
         <div>
           <h1
-            className={`text-2xl font-bold ${isDarkMode ? `text-gray-400` : ``}`}
+            className={`text-2xl font-bold ${
+              isDarkMode ? `text-gray-400` : ``
+            }`}
           >
             Colidea <i className="fa-solid fa-objects-column"></i>
           </h1>
@@ -47,6 +49,15 @@ const Navbar = () => {
             }
           >
             Profile
+          </NavLink>
+          
+          <NavLink
+            to="/explore"
+            className={({ isActive }) =>
+              `${isActive ? "text-orange-600 font-bold" : "text-gray-500"}`
+            }
+          >
+            Explore
           </NavLink>
           <NavLink
             to="/contact"

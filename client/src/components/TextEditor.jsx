@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 
@@ -6,7 +6,11 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 
+import { DarkModeContext } from "../context/DarkModeContext";
+
+
 const TextEditor = () => {
+  const {isDarkMode} = useContext(DarkModeContext)
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');
   const [content, setContent] = useState('');
@@ -70,7 +74,7 @@ const TextEditor = () => {
   };
 
   return (
-    <div className={`bg-white rounded-md shadow-md p-5 fixed w-3/5 h-max`}
+    <div className={`${isDarkMode ? "bg-gray-200 border border-gray-300" : "bg-white"} rounded-md shadow-md p-5 fixed w-3/5 h-max`}
       style={{top: "50%", left: "50%", transform: "translate(-50%, -50%)"}}
     >
       <form onSubmit={handleSubmit} className='flex flex-col gap-5'>
@@ -81,8 +85,8 @@ const TextEditor = () => {
           <option value="Category 1">Category 1</option>
           <option value="Category 2">Category 2</option>
           <option value="Category 3">Category 3</option>
-          <option value="Category 3">Category 4</option>
-          <option value="Category 3">Category 5</option>
+          <option value="Category 4">Category 4</option>
+          <option value="Category 5">Category 5</option>
         </select>
         <ReactQuill value={content} onChange={handleContentChange} placeholder="Content" required />
         <button className='bg-orange-500 p-2 rounded-md text-white hover:bg-orange-600' type="submit">Submit</button>

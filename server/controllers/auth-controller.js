@@ -138,6 +138,50 @@ const getBlogs = async (req, res) => {
     }
 }
 
+const getallusers = async (req, res) => {
+    try {
+        const allData = await User.find({})
+        const len = allData.length
+        return res.status(200).json({data: allData})
+    } catch (err) {
+        return res.status(500).json({msg: err})
+    }
+}
+
+
+
+const viewprofile = async (req, res) => {
+    try {
+        const userID = req.params.id
+        console.log(userID)
+        const foundUser = await User.findById(userID)
+        if(!foundUser) {
+            return res.status(500).json({msg: "User not found"})
+        }
+        return res.status(200).json({data: foundUser})
+    } catch(err) {
+        return res.status(500).json({msg: err})
+    }
+}
+
+const getBlogsOfUser = async (req, res) => {
+    const userId = req.params.id;
+  
+    try {
+      // Fetch blogs based on user ID
+      const blogs = await Blog.find({ author: userId });
+  
+      if (!blogs) {
+        return res.status(404).json({ msg: 'Blogs not found for this user.' });
+      }
+  
+      res.status(200).json({ data: blogs });
+    } catch (error) {
+      console.error('Error fetching blogs:', error);
+      res.status(500).json({ msg: 'Internal server error.' });
+    }
+  };
+  
 
 
 // ************ STRICT WARNING >>> DELETE BEFORE PRODUCTION ****************************
@@ -151,4 +195,32 @@ const delabl = async (req, res) => {
     }
 }
 
-module.exports = { home, register, getdetail, login, user, requestcontact, sendPost, getPostCount, getBlogs , delabl}
+const delBlog = async (req, res) => {
+    try {
+        const blogId = req.params.id; // Assuming the blog ID is passed as a URL parameter
+        console.log(blogId);
+
+        // Check if the blog exists
+        const blog = await Blog.findById(blogId);
+        console.log(blog);
+        if (!blog) {
+            return res.status(404).json({ msg: 'Blog not found' });
+        }
+
+        // Check if the logged-in user is authorized to delete the blog (optional)
+        if (blog.author.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ msg: 'Not authorized to delete this blog' });
+        }
+
+        // Perform the deletion
+        await Blog.deleteOne({ _id: blogId });
+
+        return res.status(200).json({ msg: 'Blog deleted successfully backend' });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ msg: 'Server Error' });
+    }
+};
+
+
+module.exports = { home, register, getdetail, login, user, requestcontact, sendPost, getPostCount, getBlogs , delabl, delBlog, getallusers, viewprofile, getBlogsOfUser}

@@ -60,10 +60,10 @@ const Home = () => {
               Enter Colidea
             </Link>
             <Link
-              to="/"
+              to="/getStarted"
               className="p-2 rounded-md border border-orange-500 text-orange-600"
             >
-              About the Developer
+              Get Started
             </Link>
           </div>
         </div>

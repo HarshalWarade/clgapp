@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useAuth } from "../store/auth";
 import Footer from "../components/Footer";
-import CreativeCard from "../components/CreativeCard";
+// import CreativeCard from "../components/CreativeCard";
 import { NavLink } from "react-router-dom";
 import DarkSwitch from "./DarkSwitch";
 import { DarkModeContext } from "../context/DarkModeContext";
@@ -11,6 +11,7 @@ import "react-quill/dist/quill.snow.css";
 import TextEditor from "../components/TextEditor";
 import PostCount from "../components/PostCount";
 import FetchPosts from "../components/FetchPosts";
+import SomeNav from "./SomeNav";
 
 const Relax = () => {
 
@@ -41,7 +42,7 @@ const Relax = () => {
 
   const { isDarkMode } = useContext(DarkModeContext);
 
-  console.log("Dark mode state: ", isDarkMode);
+  // console.log("Dark mode state: ", isDarkMode);
 
   return (
     <>
@@ -152,7 +153,7 @@ const Relax = () => {
                 >
                   Public View
                 </NavLink>
-                <NavLink
+                {/* <NavLink
                   className={`border border-sky-600/75 text-sky-600/75 py-2 px-3 flex items-center justify-center rounded-full ${
                     isDarkMode
                       ? `hover:bg-sky-500/75 hover:text-white`
@@ -160,6 +161,16 @@ const Relax = () => {
                   }`}
                 >
                   More
+                </NavLink> */}
+                <NavLink
+                  className={`border border-sky-600/75 text-sky-600/75 py-2 px-3 flex items-center justify-center rounded-full ${
+                    isDarkMode
+                      ? `hover:bg-sky-500/75 hover:text-white`
+                      : `hover:bg-sky-100/75`
+                  }`}
+                  to={`/explore`}
+                >
+                  Explore
                 </NavLink>
               </div>
             </div>

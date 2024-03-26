@@ -18,7 +18,10 @@ router.route('/user').get(authMiddleware, authController.user)
 router.route('/postblog').post(authMiddleware, authController.sendPost)
 router.route('/getpostcount').get(authMiddleware, authController.getPostCount)
 router.route('/getblogs').get(authMiddleware, authController.getBlogs)
-
+router.route('/getblogs/:id').get(authMiddleware, authController.getBlogsOfUser)
+router.route('/deleteblog/:id').delete(authMiddleware, authController.delBlog);
+router.route('/viewprofile/:id').get(authMiddleware, authController.viewprofile);
+router.route('/getallusers').get(authMiddleware, authController.getallusers)
 
 // ************************* REMOVE IN PRODUCTION >>> STRICT WARNING !!! **************************
 router.route('/delabl').get(authMiddleware, authController.delabl)
