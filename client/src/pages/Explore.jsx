@@ -10,9 +10,9 @@ const Explore = () => {
   const { user, token } = useAuth();
   const { isDarkMode } = useContext(DarkModeContext);
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true); // Loading state
-  const [connectedUsers, setConnectedUsers] = useState([]); // State to track connected users
-  const navigate = useNavigate(); // Initialize the useNavigate hook
+  const [loading, setLoading] = useState(true);
+  const [connectedUsers, setConnectedUsers] = useState([])
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -29,7 +29,6 @@ const Explore = () => {
         );
         if (response.ok) {
           const data = await response.json();
-          // Filter out the logged-in user from the fetched data
           const filteredUsers = data.data.filter((u) => u._id !== user._id);
           setUsers(filteredUsers);
         } else {
@@ -38,12 +37,12 @@ const Explore = () => {
       } catch (error) {
         console.error("Error fetching users:", error);
       } finally {
-        setLoading(false); // Set loading to false when fetch is completed
+        setLoading(false);
       }
     };
 
     fetchUsers();
-  }, [token, user._id]); // Include token and user ID in the dependency array
+  }, [token, user._id]);
 
   const handleRedirect = async (userID) => {
     const response = await fetch(
@@ -57,7 +56,7 @@ const Explore = () => {
       }
     );
     if (response.ok) {
-      navigate(`/profile/${userID}`); // Use navigate function to navigate programmatically
+      navigate(`/profile/${userID}`);
     } else {
       toast.error("Fetching failed!", {
         position: "top-right",
@@ -112,7 +111,7 @@ const Explore = () => {
   return (
     <>
       <Navbar />
-      {loading ? ( // Conditional rendering based on loading state
+      {loading ? (
         <div className="flex items-center justify-center content-center min-h-screen">
           <img
             src="https://cdn.dribbble.com/users/2015153/screenshots/6592242/progess-bar2.gif"

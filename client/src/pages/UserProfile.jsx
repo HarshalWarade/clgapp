@@ -1,19 +1,19 @@
-import React, { useState, useEffect, useContext } from "react";
-import { NavLink, useParams } from "react-router-dom";
-import { useAuth } from "../store/auth";
-import Navbar from "../components/Navbar";
-import { DarkModeContext } from "../context/DarkModeContext";
-import ImgCard from "../components/ImgCard";
-import PostCard from "../components/PostCard";
+import React, { useState, useEffect, useContext } from "react"
+import { NavLink, useParams } from "react-router-dom"
+import { useAuth } from "../store/auth"
+import Navbar from "../components/Navbar"
+import { DarkModeContext } from "../context/DarkModeContext"
+import ImgCard from "../components/ImgCard"
+import PostCard from "../components/PostCard"
 
 const UserProfile = () => {
-  const { isDarkMode } = useContext(DarkModeContext);
-  const { token, user } = useAuth();
-  const { id } = useParams();
-  const [userData, setUserData] = useState(null);
-  const [userPosts, setUserPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { isDarkMode } = useContext(DarkModeContext)
+  const { token, user } = useAuth()
+  const { id } = useParams()
+  const [userData, setUserData] = useState(null)
+  const [userPosts, setUserPosts] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   const formatDate = (dateString) => {
     const options = {
@@ -23,10 +23,10 @@ const UserProfile = () => {
       hour: 'numeric',
       minute: 'numeric',
       second: 'numeric',
-    };
-    const formattedDate = new Date(dateString).toLocaleDateString('en-US', options);
-    return formattedDate;
-  };
+    }
+    const formattedDate = new Date(dateString).toLocaleDateString('en-US', options)
+    return formattedDate
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,13 +40,13 @@ const UserProfile = () => {
               "Content-Type": "application/json",
             },
           }
-        );
+        )
 
         if (profileResponse.ok) {
-          const profileData = await profileResponse.json();
-          setUserData(profileData.data);
+          const profileData = await profileResponse.json()
+          setUserData(profileData.data)
         } else {
-          setError("Failed to fetch user profile.");
+          setError("Failed to fetch user profile.")
         }
 
         const postsResponse = await fetch(
@@ -58,46 +58,49 @@ const UserProfile = () => {
               "Content-Type": "application/json",
             },
           }
-        );
+        )
 
         if (postsResponse.ok) {
-          const postsData = await postsResponse.json();
-          setUserPosts(postsData.data);
+          const postsData = await postsResponse.json()
+          setUserPosts(postsData.data)
         } else {
-          setError("Failed to fetch user posts.");
+          setError("Failed to fetch user posts.")
         }
       } catch (error) {
-        console.log(error);
-        setError("Error fetching data:", error);
+        console.log(error)
+        setError("Error fetching data:", error)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchData();
-  }, [id, token]);
+    fetchData()
+  }, [id, token])
 
   const loadingContent = (
-    <div className="flex items-center justify-center content-center min-h-screen">
+    <div className="flex flex-col gap-5 items-center justify-center content-center min-h-screen"
+      style={{background: "#000000"}}
+    >
       <img
-        src="https://cdn.dribbble.com/users/2015153/screenshots/6592242/progess-bar2.gif"
+        src="https://miro.medium.com/v2/resize:fit:1400/1*okbBhXU2x0f_eFyUVyc-gA.gif"
         alt="loading..."
       />
+      {/* <h1 className="text-3xl text-white">Loading... Please Wait</h1> */}
     </div>
-  );
+  )
 
-  const errorContent = <div>Error: {error}</div>;
+  const errorContent = <div>Error: {error}</div>
 
   if (loading) {
-    return loadingContent;
+    return loadingContent
   }
 
   if (error) {
-    return errorContent;
+    return errorContent
   }
 
   if (!userData) {
-    return <div>User not found.</div>;
+    return <div>User not found.</div>
   }
 
   const userContent = (
@@ -135,7 +138,7 @@ const UserProfile = () => {
           }`}
           style={isDarkMode ? { background: "#1B1F23" } : {}}
         >
-          <h2 className={`text-xl font-semibold ${isDarkMode ? "text-slate-200" : ""}`}>About</h2>
+          <h2 className={`text-2xl font-semibold ${isDarkMode ? "text-slate-200" : ""}`}>About</h2>
           <p className={`text-justify ${isDarkMode ? "text-slate-300" : ""}`}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda aperiam ipsum esse eius labore dignissimos unde illum corporis, at sequi magni in quisquam nobis commodi placeat earum eveniet, mollitia recusandae consequuntur rerum voluptates quaerat quod veritatis. Laboriosam eos qui neque.</p>
         </div>
 
@@ -146,7 +149,7 @@ const UserProfile = () => {
           }`}
           style={isDarkMode ? { background: "#1B1F23" } : {}}
         >
-          <h2 className={`text-xl font-semibold ${isDarkMode ? "text-slate-200" : ""}`}>Featured</h2>
+          <h2 className={`text-2xl font-semibold ${isDarkMode ? "text-slate-200" : ""}`}>Featured</h2>
           <div className="grid grid-cols-3 gap-6">
             <ImgCard img="https://assets.leetcode.com/users/harshalwarade/avatar_1708405944.png" heading="Harshal LeetCode" content="Hello I'm Harshal Warade and this is my leetcode account where I usually solve DSA questions, thank you." link="https://leetcode.com/harshalwarade/" />
             <ImgCard img="https://assets.leetcode.com/users/avatars/avatar_1690568151.png" heading="Jay Gite LeetCode" content="Hello I'm Jay Gite and this is my leetcode account where I usually solve DSA questions, thank you." link="https://leetcode.com/jaygite/" />
@@ -163,8 +166,8 @@ const UserProfile = () => {
           }`}
           style={isDarkMode ? { background: "#1B1F23" } : {}}
         >
-          <h2 className="text-xl font-semibold">User Posts</h2>
-          <div className={`grid grid-cols-3`}>
+          <h2 className={`text-2xl font-semibold ${isDarkMode ? "text-slate-200" : ""}`}>User Posts</h2>
+          <div className={`grid grid-cols-3 gap-3`}>
             {userPosts.map((post) => (
               <PostCard key={post._id} title={post.title} category={post.category} timing={formatDate(post.blogCreatedAt)} content={post.content} />
             ))}
@@ -172,9 +175,9 @@ const UserProfile = () => {
         </div>
       </div>
     </>
-  );
+  )
 
-  return userContent;
-};
+  return userContent
+}
 
-export default UserProfile;
+export default UserProfile

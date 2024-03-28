@@ -8,7 +8,7 @@ const home = async (req, res) => {
     try {
         return res.status(200).send("This is a send request!")
     } catch (error) {
-        console.log(error);
+        console.log(error)
     }
 }
 const requestcontact = async (req, res) => {
@@ -25,28 +25,28 @@ const requestcontact = async (req, res) => {
 const sendPost = async (req, res) => {
     try {
         console.log(req.body)
-        const { title, category, content } = req.body;
-        console.log('Received title:', title);
-        console.log('Received category:', category);
-        console.log('Received content:', content);
+        const { title, category, content } = req.body
+        console.log('Received title:', title)
+        console.log('Received category:', category)
+        console.log('Received content:', content)
 
         const newBlog = new Blog({
             title,
             category,
             content: content,
-            author: req.user._id, // Assuming req.user contains the logged-in user's information
-            blogCreatedAt: new Date(), // Assuming you want to set the creation date to the current date
-            comments: [], // Initialize comments and likes arrays as empty
+            author: req.user._id,
+            blogCreatedAt: new Date(),
+            comments: [],
             likes: [],
-        });
-        await newBlog.save();
-        console.log("Successfully posted");
+        })
+        await newBlog.save()
+        console.log("Successfully posted")
 
-        return res.status(201).json({ msg: "Blog posted successfully", blogId: newBlog._id });
+        return res.status(201).json({ msg: "Blog posted successfully", blogId: newBlog._id })
     } catch (err) {
-        return res.status(500).json({ msg: err });
+        return res.status(500).json({ msg: err })
     }
-};
+}
 
 
 const register = async (req, res) => {
@@ -60,7 +60,6 @@ const register = async (req, res) => {
             return res.status(400).json({msg: "Email already exists!"})
         }
 
-        // hash the password
         const saltRound = 10
         const hash_password = await bcrypt.hash(password, saltRound)
 
@@ -69,7 +68,7 @@ const register = async (req, res) => {
         return res.status(201).json({msg: "Registration Successful", token: await createdUser.generateToken(), userId: createdUser._id.toString(),})
 
     } catch (err) {
-        console.log(err);
+        console.log(err)
     }
 }
 
@@ -101,11 +100,10 @@ const login = async (req, res) => {
         }
 
     } catch (error) {
-        // return res.status(500).json({msg: "Internal Server Error"})
         next(error)
-
     }
 }
+
 
 // sending authorised user data
 
@@ -153,7 +151,6 @@ const getallusers = async (req, res) => {
 const viewprofile = async (req, res) => {
     try {
         const userID = req.params.id
-        console.log(userID)
         const foundUser = await User.findById(userID)
         if(!foundUser) {
             return res.status(500).json({msg: "User not found"})
@@ -165,22 +162,21 @@ const viewprofile = async (req, res) => {
 }
 
 const getBlogsOfUser = async (req, res) => {
-    const userId = req.params.id;
+    const userId = req.params.id
   
     try {
-      // Fetch blogs based on user ID
-      const blogs = await Blog.find({ author: userId });
+      const blogs = await Blog.find({ author: userId })
   
       if (!blogs) {
-        return res.status(404).json({ msg: 'Blogs not found for this user.' });
+        return res.status(404).json({ msg: 'Blogs not found for this user.' })
       }
   
-      res.status(200).json({ data: blogs });
+      res.status(200).json({ data: blogs })
     } catch (error) {
-      console.error('Error fetching blogs:', error);
-      res.status(500).json({ msg: 'Internal server error.' });
+      console.error('Error fetching blogs:', error)
+      res.status(500).json({ msg: 'Internal server error.' })
     }
-  };
+  }
   
 
 
@@ -188,7 +184,7 @@ const getBlogsOfUser = async (req, res) => {
 
 const delabl = async (req, res) => {
     try {
-        await Blog.deleteMany({});
+        await Blog.deleteMany({})
         return res.status(200).json({msg: "deleted!"})
     } catch (err) {
         return res.status(500).json({msg: err})
@@ -197,30 +193,27 @@ const delabl = async (req, res) => {
 
 const delBlog = async (req, res) => {
     try {
-        const blogId = req.params.id; // Assuming the blog ID is passed as a URL parameter
-        console.log(blogId);
+        const blogId = req.params.id
+        // console.log(blogId)
 
-        // Check if the blog exists
-        const blog = await Blog.findById(blogId);
-        console.log(blog);
+        const blog = await Blog.findById(blogId)
+        console.log(blog)
         if (!blog) {
-            return res.status(404).json({ msg: 'Blog not found' });
+            return res.status(404).json({ msg: 'Blog not found' })
         }
 
-        // Check if the logged-in user is authorized to delete the blog (optional)
         if (blog.author.toString() !== req.user._id.toString()) {
-            return res.status(403).json({ msg: 'Not authorized to delete this blog' });
+            return res.status(403).json({ msg: 'Not authorized to delete this blog' })
         }
 
-        // Perform the deletion
-        await Blog.deleteOne({ _id: blogId });
+        await Blog.deleteOne({ _id: blogId })
 
-        return res.status(200).json({ msg: 'Blog deleted successfully backend' });
+        return res.status(200).json({ msg: 'Blog deleted successfully backend' })
     } catch (err) {
-        console.error(err);
-        return res.status(500).json({ msg: 'Server Error' });
+        console.error(err)
+        return res.status(500).json({ msg: 'Server Error' })
     }
-};
+}
 
 
 module.exports = { home, register, getdetail, login, user, requestcontact, sendPost, getPostCount, getBlogs , delabl, delBlog, getallusers, viewprofile, getBlogsOfUser}

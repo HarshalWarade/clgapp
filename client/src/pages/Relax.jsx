@@ -1,16 +1,16 @@
-import React, { useContext, useState, useEffect } from "react";
-import { useAuth } from "../store/auth";
-import Footer from "../components/Footer";
-import { NavLink } from "react-router-dom";
-import DarkSwitch from "./DarkSwitch";
-import { DarkModeContext } from "../context/DarkModeContext";
-import Navbar from "../components/Navbar";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import TextEditor from "../components/TextEditor";
-import PostCount from "../components/PostCount";
-import FetchPosts from "../components/FetchPosts";
-import SomeNav from "./SomeNav";
+import React, { useContext, useState, useEffect } from "react"
+import { useAuth } from "../store/auth"
+import Footer from "../components/Footer"
+import { NavLink } from "react-router-dom"
+import DarkSwitch from "./DarkSwitch"
+import { DarkModeContext } from "../context/DarkModeContext"
+import Navbar from "../components/Navbar"
+import ReactQuill from "react-quill"
+import "react-quill/dist/quill.snow.css"
+import TextEditor from "../components/TextEditor"
+import PostCount from "../components/PostCount"
+import FetchPosts from "../components/FetchPosts"
+import SomeNav from "./SomeNav"
 
 const Relax = () => {
 
@@ -26,20 +26,20 @@ const Relax = () => {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (createBlog && !document.getElementById("text-editor").contains(event.target)) {
-        setCreateBlog(false);
+        setCreateBlog(false)
       }
-    };
+    }
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside)
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [createBlog]);
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [createBlog])
 
-  const { user } = useAuth();
+  const { user } = useAuth()
 
-  const { isDarkMode } = useContext(DarkModeContext);
+  const { isDarkMode } = useContext(DarkModeContext)
 
   return (
     <>
@@ -296,7 +296,7 @@ const Relax = () => {
 
       <Footer />
     </>
-  );
-};
+  )
+}
 
-export default Relax;
+export default Relax
