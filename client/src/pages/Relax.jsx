@@ -1,45 +1,46 @@
-import React, { useContext, useState, useEffect } from "react"
-import { useAuth } from "../store/auth"
-import Footer from "../components/Footer"
-import { NavLink } from "react-router-dom"
-import DarkSwitch from "./DarkSwitch"
-import { DarkModeContext } from "../context/DarkModeContext"
-import Navbar from "../components/Navbar"
-import ReactQuill from "react-quill"
-import "react-quill/dist/quill.snow.css"
-import TextEditor from "../components/TextEditor"
-import PostCount from "../components/PostCount"
-import FetchPosts from "../components/FetchPosts"
-import SomeNav from "./SomeNav"
+import React, { useContext, useState, useEffect } from "react";
+import { useAuth } from "../store/auth";
+import Footer from "../components/Footer";
+import { NavLink } from "react-router-dom";
+import { DarkModeContext } from "../context/DarkModeContext";
+import Navbar from "../components/Navbar";
+import "react-quill/dist/quill.snow.css";
+import TextEditor from "../components/TextEditor";
+import PostCount from "../components/PostCount";
+import FetchPosts from "../components/FetchPosts";
 
 const Relax = () => {
-
-  const [createBlog, setCreateBlog] = useState(false)
-
+  const [createBlog, setCreateBlog] = useState(false);
+  const { user } = useAuth();
+  const { isDarkMode } = useContext(DarkModeContext);
+  
+  
   const toggleCreateBlog = () => {
-    setCreateBlog(!createBlog)
-  }
-
+    setCreateBlog(!createBlog);
+  };
+  
   const closeDialogue = () => {
-    setCreateBlog(false)
-  }
+    setCreateBlog(false);
+  };
+  
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (createBlog && !document.getElementById("text-editor").contains(event.target)) {
-        setCreateBlog(false)
-      }
-    }
+      if (
+        createBlog &&
+        !document.getElementById("text-editor").contains(event.target)
+        ) {
+          setCreateBlog(false);
+        }
+      };
+      
+      document.addEventListener("mousedown", handleClickOutside);
+      
+      return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [createBlog]);
 
-    document.addEventListener("mousedown", handleClickOutside)
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [createBlog])
-
-  const { user } = useAuth()
-
-  const { isDarkMode } = useContext(DarkModeContext)
 
   return (
     <>
@@ -74,20 +75,26 @@ const Relax = () => {
               </h2>
               <p
                 className={`text-md text-justify ${
-                  isDarkMode ? `text-gray-400` : `text-gray-700`
+                  isDarkMode ? `text-gray-300` : `text-gray-700`
                 }`}
               >
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ea
-                pariatur minus rem recusandae inventore exercitationem aliquid
-                omnis laudantium. Commodi, harum.
+                {user.bio}
               </p>
-              <NavLink
-                className={`text-blue-500 font-semibold hover:underline`}
-              >
-                500+ peers
-              </NavLink>
+              <div className="flex gap-5">
+                <NavLink
+                  className={`text-blue-500 font-semibold hover:underline`}
+                >
+                  0 followers
+                </NavLink>
+                <NavLink
+                  className={`text-blue-500 font-semibold hover:underline`}
+                >
+                  0 followings
+                </NavLink>
+              </div>
               <div className="relative flex items-center content-center gap-12">
                 <NavLink
+                  to={`/settings`}
                   className={`bg-sky-500/75 text-white py-2 px-3 flex items-center justify-center rounded-full hover:bg-sky-600/75`}
                 >
                   Settings
@@ -122,9 +129,12 @@ const Relax = () => {
           >
             <h1 className="text-xl"></h1>
 
-            <div className="flex justify-evenly w-full px-6 text-slate-500">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Voluptatibus, similique!
+            <div
+              className={`flex justify-evenly w-full px-6 ${
+                isDarkMode ? "text-slate-400" : ""
+              }`}
+            >
+              {user.college}
             </div>
           </div>
         </div>
@@ -285,18 +295,20 @@ const Relax = () => {
             </div>
           </div>
           <div id="posts" className="text-slate-300">
-            <FetchPosts/>
+            <FetchPosts />
           </div>
-          <div className={`${createBlog ? "block" : "hidden"}`} id="text-editor">
-            
-            <TextEditor closeDialogue={closeDialogue}  />
+          <div
+            className={`${createBlog ? "block" : "hidden"}`}
+            id="text-editor"
+          >
+            <TextEditor closeDialogue={closeDialogue} />
           </div>
         </div>
       </div>
 
       <Footer />
     </>
-  )
-}
+  );
+};
 
-export default Relax
+export default Relax;

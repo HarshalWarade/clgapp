@@ -10,6 +10,7 @@ import Relax from "./pages/Relax"
 import ContactUs from "./pages/ContactUs"
 import Explore from "./pages/Explore"
 import UserProfile from "./pages/UserProfile"
+import Settings from "./pages/Settings"
 
 const App = () => {
   const { isLoggedIn } = useAuth()
@@ -28,6 +29,11 @@ const App = () => {
           )}
           {isLoggedIn ? (
             <Route path="/explore" element={<Explore />} />
+          ) : (
+            <Route path="/explore" element={<ErrorPage />} />
+          )}
+          {isLoggedIn ? (
+            <Route path="/settings" element={<Settings />} />
           ) : (
             <Route path="/explore" element={<ErrorPage />} />
           )}

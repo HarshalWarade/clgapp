@@ -22,6 +22,7 @@ router.route('/getblogs/:id').get(authMiddleware, authController.getBlogsOfUser)
 router.route('/deleteblog/:id').delete(authMiddleware, authController.delBlog);
 router.route('/viewprofile/:id').get(authMiddleware, authController.viewprofile);
 router.route('/getallusers').get(authMiddleware, authController.getallusers)
+router.route('/settings/:id').put(authMiddleware, authController.settings)
 
 // ************************* REMOVE IN PRODUCTION >>> STRICT WARNING !!! **************************
 router.route('/delabl').get(authMiddleware, authController.delabl)

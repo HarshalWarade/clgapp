@@ -139,7 +139,7 @@ const UserProfile = () => {
           style={isDarkMode ? { background: "#1B1F23" } : {}}
         >
           <h2 className={`text-2xl font-semibold ${isDarkMode ? "text-slate-200" : ""}`}>About</h2>
-          <p className={`text-justify ${isDarkMode ? "text-slate-300" : ""}`}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda aperiam ipsum esse eius labore dignissimos unde illum corporis, at sequi magni in quisquam nobis commodi placeat earum eveniet, mollitia recusandae consequuntur rerum voluptates quaerat quod veritatis. Laboriosam eos qui neque.</p>
+          <p className={`text-justify ${isDarkMode ? "text-slate-300" : ""}`}>{userData.about}</p>
         </div>
 
 
