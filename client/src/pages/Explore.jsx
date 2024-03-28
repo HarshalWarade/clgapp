@@ -11,6 +11,7 @@ const Explore = () => {
   const { isDarkMode } = useContext(DarkModeContext);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true); // Loading state
+  const [connectedUsers, setConnectedUsers] = useState([]); // State to track connected users
   const navigate = useNavigate(); // Initialize the useNavigate hook
 
   useEffect(() => {
@@ -28,6 +29,7 @@ const Explore = () => {
         );
         if (response.ok) {
           const data = await response.json();
+          // Filter out the logged-in user from the fetched data
           const filteredUsers = data.data.filter((u) => u._id !== user._id);
           setUsers(filteredUsers);
         } else {
@@ -68,6 +70,33 @@ const Explore = () => {
       });
     }
   };
+
+  const connectUser = (userID) => {
+    setConnectedUsers([...connectedUsers, userID]);
+    toast.success("User connected!", {
+      position: "top-right",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
+  const unconnectUser = (userID) => {
+    setConnectedUsers(connectedUsers.filter((id) => id !== userID));
+    toast.success("User unconnected!", {
+      position: "top-right",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
   const inProgress = () => {
     toast.info("Still in progress 🙂😎", {
       position: "top-right",
@@ -78,7 +107,7 @@ const Explore = () => {
       draggable: true,
       progress: undefined,
     });
-  }
+  };
 
   return (
     <>
@@ -123,12 +152,21 @@ const Explore = () => {
                   >
                     Visit Profile
                   </button>
-                  <button
-                    className={`border border-blue-600 text-blue-600 bg-blue-50 px-3 py-2 rounded-md`}
-                    onClick={inProgress}
-                  >
-                    Connect
-                  </button>
+                  {connectedUsers.includes(user._id) ? (
+                    <button
+                      className={`border border-blue-600 text-blue-600 bg-blue-50 px-3 py-2 rounded-md`}
+                      onClick={() => unconnectUser(user._id)}
+                    >
+                      Unconnect
+                    </button>
+                  ) : (
+                    <button
+                      className={`border border-blue-600 text-blue-600 bg-blue-50 px-3 py-2 rounded-md`}
+                      onClick={() => connectUser(user._id)}
+                    >
+                      Connect
+                    </button>
+                  )}
                 </div>
               </div>
             ))}
