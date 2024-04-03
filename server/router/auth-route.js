@@ -23,6 +23,10 @@ router.route('/deleteblog/:id').delete(authMiddleware, authController.delBlog);
 router.route('/viewprofile/:id').get(authMiddleware, authController.viewprofile);
 router.route('/getallusers').get(authMiddleware, authController.getallusers)
 router.route('/settings/:id').put(authMiddleware, authController.settings)
+router.route('/follow/:id').post(authMiddleware, authController.follow)
+router.route('/unfollow/:id').post(authMiddleware, authController.unfollow)
+router.route('/remyaccount/:id').get(authMiddleware, authController.remyaccount)
+router.route('/addfeatured/:id').post(authMiddleware, authController.addfeatured)
 
 // ************************* REMOVE IN PRODUCTION >>> STRICT WARNING !!! **************************
 router.route('/delabl').get(authMiddleware, authController.delabl)

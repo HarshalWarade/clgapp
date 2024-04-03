@@ -5,7 +5,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Navigate, useNavigate } from "react-router-dom";
+import { NavLink, Navigate, useNavigate } from "react-router-dom";
 // import { CustomUserContext, CustomUserSetContext } from "../context/UserContext";
 
 const SettingsPage = () => {
@@ -108,7 +108,9 @@ const SettingsPage = () => {
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleInputChange}
-                className={`outline-none rounded-md px-3 py-2 ${isDarkMode ? "bg-slate-700" : "bg-slate-100"}`}
+                className={`outline-none rounded-md px-3 py-2 ${
+                  isDarkMode ? "bg-gray-700" : "bg-slate-100"
+                }`}
               />
             </div>
             <div className="flex flex-col gap-4">
@@ -119,7 +121,9 @@ const SettingsPage = () => {
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleInputChange}
-                className={`outline-none rounded-md px-3 py-2 ${isDarkMode ? "bg-slate-700" : "bg-slate-100"}`}
+                className={`outline-none rounded-md px-3 py-2 ${
+                  isDarkMode ? "bg-gray-700" : "bg-slate-100"
+                }`}
               />
             </div>
             <div className="flex flex-col gap-4">
@@ -130,7 +134,9 @@ const SettingsPage = () => {
                 name="username"
                 value={formData.username}
                 onChange={handleInputChange}
-                className={`outline-none rounded-md px-3 py-2 ${isDarkMode ? "bg-slate-700" : "bg-slate-100"}`}
+                className={`outline-none rounded-md px-3 py-2 ${
+                  isDarkMode ? "bg-gray-700" : "bg-slate-100"
+                }`}
               />
             </div>
             <div className="flex flex-col gap-4">
@@ -141,20 +147,38 @@ const SettingsPage = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className={`outline-none rounded-md px-3 py-2 ${isDarkMode ? "bg-slate-700" : "bg-slate-100"}`}
+                className={`outline-none rounded-md px-3 py-2 ${
+                  isDarkMode ? "bg-gray-700" : "bg-slate-100"
+                }`}
               />
             </div>
             <div className="flex flex-col gap-4">
               <label htmlFor="college">College:</label>
-              <input
-                type="text"
+              <select
                 id="college"
                 name="college"
                 value={formData.college}
                 onChange={handleInputChange}
-                className={`outline-none rounded-md px-3 py-2 ${isDarkMode ? "bg-slate-700" : "bg-slate-100"}`}
-              />
+                className={`outline-none rounded-md px-3 py-2 ${
+                  isDarkMode ? "bg-gray-700" : "bg-slate-100"
+                }`}
+              >
+                <option value="">Select College</option>
+                <option value="Prof. Ram Meghe College of Engineering and Management">
+                  Prof. Ram Meghe College of Engineering and Management
+                </option>
+                <option value="Prof. Ram Meghe Institute of Technology and Research">
+                  Prof. Ram Meghe Institute of Technology and Research
+                </option>
+                <option value="Sipna College of Engineering and Technology">
+                  Sipna College of Engineering and Technology
+                </option>
+                <option value="P.R.Pote College of Engineering">
+                  P.R.Pote College of Engineering
+                </option>
+              </select>
             </div>
+
             <div className="flex flex-col gap-4">
               <label htmlFor="bio">Bio:</label>
               <textarea
@@ -162,7 +186,9 @@ const SettingsPage = () => {
                 name="bio"
                 value={formData.bio}
                 onChange={handleInputChange}
-                className={`outline-none rounded-md px-3 py-2 ${isDarkMode ? "bg-slate-700" : "bg-slate-100"}`}
+                className={`outline-none rounded-md h-max px-3 py-2 ${
+                  isDarkMode ? "bg-gray-700" : "bg-slate-100"
+                }`}
               />
             </div>
             <div className="flex flex-col gap-4">
@@ -172,7 +198,9 @@ const SettingsPage = () => {
                 name="about"
                 value={formData.about}
                 onChange={handleInputChange}
-                className={`outline-none rounded-md px-3 py-2 ${isDarkMode ? "bg-slate-700" : "bg-slate-100"}`}
+                className={`outline-none rounded-md px-3 py-2 ${
+                  isDarkMode ? "bg-gray-700" : "bg-slate-100"
+                }`}
               />
             </div>
             <div className="flex flex-col gap-4">
@@ -183,7 +211,9 @@ const SettingsPage = () => {
                 name="dob"
                 value={formData.dob}
                 onChange={handleInputChange}
-                className={`outline-none rounded-md px-3 py-2 ${isDarkMode ? "bg-slate-700" : "bg-slate-100"}`}
+                className={`outline-none rounded-md px-3 py-2 ${
+                  isDarkMode ? "bg-gray-700" : "bg-slate-100"
+                }`}
               />
             </div>
             <div className="flex flex-col gap-4">
@@ -194,7 +224,9 @@ const SettingsPage = () => {
                 name="phone"
                 value={formData.phone}
                 onChange={handleInputChange}
-                className={`outline-none rounded-md px-3 py-2 ${isDarkMode ? "bg-slate-700" : "bg-slate-100"}`}
+                className={`outline-none rounded-md px-3 py-2 ${
+                  isDarkMode ? "bg-gray-700" : "bg-slate-100"
+                }`}
               />
             </div>
             <div className="flex flex-col gap-4">
@@ -205,17 +237,29 @@ const SettingsPage = () => {
                 name="skills"
                 value={formData.skills}
                 onChange={handleInputChange}
-                className={`outline-none rounded-md px-3 py-2 ${isDarkMode ? "bg-slate-700" : "bg-slate-100"}`}
+                placeholder="Add skills using space separation, ex. C++ Machine-Learning Web-Developer"
+                autoComplete="off"
+                className={`outline-none rounded-md px-3 py-2 ${
+                  isDarkMode ? "bg-gray-700" : "bg-slate-100"
+                }`}
               />
             </div>
             <button
               type="submit"
-              className={`bg-blue-500 text-white px-4 py-2 rounded-md ${
+              className={`bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md ${
                 isDarkMode ? "bg-blue-700" : "bg-blue-500"
               }`}
             >
               Save Settings
             </button>
+            <NavLink
+              to={"/relax"}
+              className={`flex items-center justify-center content-center hover:bg-blue-600 bg-blue-500 text-white px-4 py-2 rounded-md ${
+                isDarkMode ? "bg-blue-700" : "bg-blue-500"
+              }`}
+            >
+              Go back
+            </NavLink>
           </form>
         </div>
       </div>

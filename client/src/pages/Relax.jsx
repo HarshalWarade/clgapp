@@ -8,39 +8,72 @@ import "react-quill/dist/quill.snow.css";
 import TextEditor from "../components/TextEditor";
 import PostCount from "../components/PostCount";
 import FetchPosts from "../components/FetchPosts";
+import Featured from "./Featured";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Comment from "./Comment";
 
 const Relax = () => {
+  // *********************** MUST DELETE IN PRODUCTION *************************
+  const { token } = useAuth();
+
+  const delAccount = async () => {
+    const response = await fetch(
+      `http://localhost:3000/api/auth/remyaccount/${user._id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (response.ok) {
+      toast.success("Please fill this form to continue", {
+        position: "top-right",
+        autoClose: 12000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } else {
+      console.log("Failed to delete account!");
+    }
+  };
+
+  // ****************************************************************************************
+
   const [createBlog, setCreateBlog] = useState(false);
   const { user } = useAuth();
   const { isDarkMode } = useContext(DarkModeContext);
-  
-  
+  const [showFeatured, setShowFeatured] = useState(false);
+
   const toggleCreateBlog = () => {
     setCreateBlog(!createBlog);
   };
-  
+
   const closeDialogue = () => {
     setCreateBlog(false);
   };
-  
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
         createBlog &&
         !document.getElementById("text-editor").contains(event.target)
-        ) {
-          setCreateBlog(false);
-        }
-      };
-      
-      document.addEventListener("mousedown", handleClickOutside);
-      
-      return () => {
+      ) {
+        setCreateBlog(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [createBlog]);
-
-
 
   return (
     <>
@@ -119,6 +152,7 @@ const Relax = () => {
                 >
                   Explore
                 </NavLink>
+                <button onClick={delAccount}>Del Account</button>
               </div>
             </div>
           </div>
@@ -131,10 +165,22 @@ const Relax = () => {
 
             <div
               className={`flex justify-evenly w-full px-6 ${
-                isDarkMode ? "text-slate-400" : ""
+                isDarkMode ? "text-slate-200" : "text-slate-700"
               }`}
             >
-              {user.college}
+              {user.college ? (
+                <div className="flex items-center justify-center content-center gap-3">
+                  <i className="text-xl fa-regular fa-school-circle-check"></i>
+                  <div>{user.college}</div>
+                </div>
+              ) : (
+                <div>
+                  <p>
+                    <i className="fa-sharp fa-solid fa-school-circle-xmark"></i>{" "}
+                    Please choose you college from the settings page!
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -229,15 +275,11 @@ const Relax = () => {
             </h2>
           </div>
           <div
-            className={`flex justify-between text-slate-500 ${
-              isDarkMode ? `` : `text-slate-500`
+            className={`flex text-justify justify-between ${
+              isDarkMode ? `text-slate-300` : `text-slate-500`
             }`}
           >
-            <p>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Saepe
-              omnis obcaecati perspiciatis ipsam quae sapiente aspernatur minima
-              harum voluptatem eos?
-            </p>
+            <p>{user.about}</p>
           </div>
           <div
             className={`border flex flex-col gap-5 mt-2 rounded-md text-slate-400 p-5 ${
@@ -248,15 +290,75 @@ const Relax = () => {
               Top Skills <i className="fa-regular fa-gem"></i>
             </h1>
             <div className={`px-5`}>
-              <ul className="flex flex-wrap list-disc gap-3 justify-between">
-                <li>Something</li>
-                <li>Something</li>
-                <li>Something</li>
-                <li>Something</li>
-                <li>Something</li>
-                <li>Something</li>
-              </ul>
+              {user.skills && user.skills.length > 0 ? (
+                <ul className="flex flex-wrap list-disc gap-3 justify-between">
+                  {user.skills.map((skill, index) =>
+                    skill
+                      .split(" ")
+                      .map((word, wordIndex) => (
+                        <li key={index * 100 + wordIndex}>{word}</li>
+                      ))
+                  )}
+                </ul>
+              ) : (
+                <p>No skills available</p>
+              )}
             </div>
+          </div>
+        </div>
+
+        <div
+          className={`flex shadow-sm flex-col gap-3 mb-5 mt-5 px-6 py-9 rounded-md ${
+            isDarkMode ? `` : `bg-white`
+          }`}
+          style={isDarkMode ? { background: "#1B1F23" } : {}}
+        >
+          <div className="flex justify-between">
+            <h2
+              className={`text-xl font-semibold ${
+                isDarkMode ? `text-slate-200` : `text-slate-800`
+              }`}
+            >
+              Featured
+            </h2>
+            <div
+              className={`flex text-justify justify-between ${
+                isDarkMode ? `text-slate-300` : `text-slate-500`
+              }`}
+            >
+              <button onClick={() => setShowFeatured(!showFeatured)}>
+                {showFeatured ? "Close Featured" : "Add Featured"}
+              </button>
+              {showFeatured ? <Featured /> : ""}
+            </div>
+          </div>
+          <div className="grid grid-cols-3 gap-6 text-slate-200">
+            {user.featured ? (
+              <div className="flex flex-wrap gap-5">
+                {user.featured.map((item, index) => (
+                  <div
+                    key={index}
+                    className={`${isDarkMode ? "border border-gray-700" : "border"} rounded-md p-4 mb-4 flex flex-col gap-3 items-center`}
+                  >
+                    <img src={item.imageUrl} alt="Featured" className="mb-2 rounded-md" />
+                    <h4 className={`text-xl font-semibold mb-2 ${isDarkMode ? "text-slate-200" : "text-slate-800"}`}>
+                      {item.heading}
+                    </h4>
+                    <p className={`mb-2 ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>{item.content}</p>
+                    <a
+                      href={item.visitLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-blue-500 w-full text-white flex items-center content-center justify-center p-2 rounded-md hover:bg-blue-600"
+                    >
+                      Visit Link
+                    </a>
+                  </div>
+                ))}
+              </div >
+            ) : (
+              "You haven't featured anything yet!"
+            )}
           </div>
         </div>
 
@@ -307,6 +409,12 @@ const Relax = () => {
       </div>
 
       <Footer />
+
+      <ToastContainer
+        position="top-left"
+        autoClose={12000}
+        hideProgressBar={false}
+      />
     </>
   );
 };

@@ -99,7 +99,7 @@ const Home = () => {
           />
           <CreativeCard
             title="Be a star"
-            icon={<i class="fa-solid fa-star-shooting"></i>}
+            icon={<i className="fa-solid fa-star-shooting"></i>}
             body="Build huge netwrok with lots of followers to get a verified badge."
           />
         </div>

@@ -229,6 +229,97 @@ const settings = async (req, res) => {
     }
 };
 
+const follow = async (req, res) => {
+  try {
+    const userToFollow = await User.findById(req.params.userId);
+
+    if (!userToFollow) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const isAlreadyFollowing = req.user.following.includes(req.params.userId);
+
+    if (isAlreadyFollowing) {
+      return res.status(400).json({ message: 'You are already following this user' });
+    }
+
+    req.user.following.push(req.params.userId);
+    await req.user.save();
+
+    res.status(200).json({ message: 'User followed successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+const unfollow = async (req, res) => {
+  try {
+    const userToUnfollow = await User.findById(req.params.userId);
+
+    if (!userToUnfollow) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const isFollowing = req.user.following.includes(req.params.userId);
+
+    if (!isFollowing) {
+      return res.status(400).json({ message: 'You are not following this user' });
+    }
+
+    req.user.following = req.user.following.filter(id => id.toString() !== req.params.userId);
+    await req.user.save();
+
+    res.status(200).json({ message: 'User unfollowed successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+
+const remyaccount = async (req, res) => {
+  try {
+    await User.findByIdAndDelete(req.params.id)
+    console.log("Deleted successfully")
+  } catch(err) {
+    console.log(err)
+    return res.status(500).json({message: "Failed to delete user (B)"})
+  }
+  
+}
+
+const addfeatured = async (req, res) => {
+  const userIDdata = req.params.id
+  const { imageUrl, heading, content, visitLink } = req.body;
+  console.log(userIDdata)
+  console.log(req.body)
+  try {
+      // Find the user by userId
+      const user = await User.findById(userIDdata);
+      if (!user) {
+          return res.status(404).json({ error: 'User not found' });
+      }
+
+      // Create a new featured item
+      const newFeatured = {
+          imageUrl,
+          heading,
+          content,
+          visitLink
+      };
+
+      // Add the new featured item to the user's featured array
+      user.featured.push(newFeatured);
+      await user.save();
+
+      return res.status(201).json({ message: 'Featured item added successfully', user });
+  } catch (error) {
+      console.error('Error adding featured item:', error);
+      return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 
 // ************ STRICT WARNING >>> DELETE BEFORE PRODUCTION ****************************
 
@@ -267,6 +358,8 @@ const delBlog = async (req, res) => {
   }
 };
 
+
+
 module.exports = {
   home,
   register,
@@ -283,4 +376,8 @@ module.exports = {
   viewprofile,
   getBlogsOfUser,
   settings,
+  follow,
+  unfollow,
+  remyaccount,
+  addfeatured,
 };

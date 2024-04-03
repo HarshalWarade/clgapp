@@ -3,6 +3,7 @@ import { useAuth } from '../store/auth';
 import { DarkModeContext } from '../context/DarkModeContext';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Comment from '../pages/Comment';
 
 const FetchPosts = () => {
   const { isDarkMode } = useContext(DarkModeContext);
@@ -162,7 +163,7 @@ const FetchPosts = () => {
                 ) : (
                   <>
                     <div
-                      className={`oxygen-mono-regular ${isDarkMode ? '' : 'text-slate-500'}`}
+                      className={`consolas ${isDarkMode ? '' : 'text-slate-500'}`}
                       dangerouslySetInnerHTML={{ __html: blog.content }}
                       style={{ whiteSpace: 'pre-wrap' }}
                     />
@@ -179,12 +180,17 @@ const FetchPosts = () => {
                       Edit
                     </button>
                   </div> */}
-                  <div>
+                  <div className='flex items-center w-full justify-between'>
                     <button
                       className="text-red-500"
                       onClick={() => handleDelete(blog._id)}
                     >
                       <i className="fa-solid fa-trash-list"></i>
+                    </button>
+                    <button
+                      className="text-slate-400"
+                    >
+                      <i className="fa-solid fa-comment"></i>
                     </button>
                   </div>
                 </div>

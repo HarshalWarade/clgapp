@@ -1,6 +1,25 @@
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 
+const featuredSchema = new mongoose.Schema({
+    imageUrl: {
+        type: String,
+        required: true
+    },
+    heading: {
+        type: String,
+        required: true
+    },
+    content: {
+        type: String,
+        required: true
+    },
+    visitLink: {
+        type: String,
+        required: true
+    }
+}, {timestamps: true});
+
 const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
@@ -60,6 +79,7 @@ const userSchema = new mongoose.Schema({
         type: [String],
         default: [],
     },
+    featured: [featuredSchema]
 }, { timestamps: true })
 
 // jsonwebtoken -> storing in cookies
@@ -76,6 +96,6 @@ userSchema.methods.generateToken = async function() {
     }
 }
 
-const User = new mongoose.model('USER', userSchema)
+const User = mongoose.model('USER', userSchema)
 
 module.exports = User
