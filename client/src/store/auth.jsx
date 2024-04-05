@@ -17,7 +17,6 @@ export const AuthProvider = ({children}) => {
     let isLoggedIn = !!token
 
 
-    // creating logout functionality in the context 
     const LogOutUser = () => {
         setToken("")
         return localStorage.removeItem('token')

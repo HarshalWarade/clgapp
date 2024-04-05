@@ -50,6 +50,18 @@ const Relax = () => {
   const { isDarkMode } = useContext(DarkModeContext);
   const [showFeatured, setShowFeatured] = useState(false);
 
+  const handleadminfirst = () => {
+    toast.info("We're building this section, you must wait for around a year to use this feature! Oh! Damn.", {
+      position: "top-right",
+      autoClose: 12000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  }
+
   const toggleCreateBlog = () => {
     setCreateBlog(!createBlog);
   };
@@ -152,7 +164,7 @@ const Relax = () => {
                 >
                   Explore
                 </NavLink>
-                <button onClick={delAccount}>Del Account</button>
+                {user.isadmin ? "" : <button onClick={delAccount}>Del Account</button>}
               </div>
             </div>
           </div>
@@ -185,6 +197,31 @@ const Relax = () => {
           </div>
         </div>
 
+        {user.isadmin ? (
+          <>
+            <div
+              className={`mb-5 shadow-sm mt-5 px-6 py-9 rounded-md ${
+                isDarkMode ? `` : `bg-white`
+              }`}
+              style={isDarkMode ? { background: "#1B1F23" } : {}}
+            >
+              <div className="flex flex-col gap-5">
+                <h2
+                  className={`text-xl font-semibold ${
+                    isDarkMode ? `text-slate-200` : `text-slate-800`
+                  }`}
+                >
+                  Admin Features
+                </h2>
+                <div className="flex gap-5 items-center content-center justify-center">
+                  <button className={`${isDarkMode ? "text-slate-200 bg-sky-600 p-2 rounded-md hover:bg-sky-700" : "p-2 rounded-md bg-gray-400 text-white"}`} onClick={() => handleadminfirst()}>View all accounts</button>
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          ""
+        )}
         <div
           className={`mb-5 shadow-sm mt-5 px-6 py-9 rounded-md ${
             isDarkMode ? `` : `bg-white`
@@ -338,13 +375,29 @@ const Relax = () => {
                 {user.featured.map((item, index) => (
                   <div
                     key={index}
-                    className={`${isDarkMode ? "border border-gray-700" : "border"} rounded-md p-4 mb-4 flex flex-col gap-3 items-center`}
+                    className={`${
+                      isDarkMode ? "border border-gray-700" : "border"
+                    } rounded-md p-4 mb-4 flex flex-col gap-3 items-center`}
                   >
-                    <img src={item.imageUrl} alt="Featured" className="mb-2 rounded-md" />
-                    <h4 className={`text-xl font-semibold mb-2 ${isDarkMode ? "text-slate-200" : "text-slate-800"}`}>
+                    <img
+                      src={item.imageUrl}
+                      alt="Featured"
+                      className="mb-2 rounded-md"
+                    />
+                    <h4
+                      className={`text-xl font-semibold mb-2 ${
+                        isDarkMode ? "text-slate-200" : "text-slate-800"
+                      }`}
+                    >
                       {item.heading}
                     </h4>
-                    <p className={`mb-2 ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>{item.content}</p>
+                    <p
+                      className={`mb-2 ${
+                        isDarkMode ? "text-slate-300" : "text-slate-700"
+                      }`}
+                    >
+                      {item.content}
+                    </p>
                     <a
                       href={item.visitLink}
                       target="_blank"
@@ -355,7 +408,7 @@ const Relax = () => {
                     </a>
                   </div>
                 ))}
-              </div >
+              </div>
             ) : (
               "You haven't featured anything yet!"
             )}

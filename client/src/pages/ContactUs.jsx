@@ -16,13 +16,8 @@ const ContactUs = () => {
     message: "",
   });
 
-  // auth user
-
-  const [userData, setUserData] = useState(true)
-
   const {user} = useAuth()
 
-  // console.log(user)
 
 
   const handleChange = (e) => {
@@ -32,29 +27,29 @@ const ContactUs = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(user.username)
-    console.log(user.email)
     if(formData.username != user.username) {
       toast.error("Please use the same username which was used to create this account", {
         position: "top-right",
-        autoClose: 12000,
+        autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
       });
+      return
     }
     if(formData.email != user.email) {
       toast.error("Please use the same email which was used to create this account", {
         position: "top-right",
-        autoClose: 12000,
+        autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
       });
+      return
     }
     try {
       if (isLoggedIn) {
@@ -71,7 +66,7 @@ const ContactUs = () => {
         if (response.ok) {
           toast.success("Message was sent successfully to the team!", {
             position: "top-right",
-            autoClose: 12000,
+            autoClose: 2000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -86,7 +81,7 @@ const ContactUs = () => {
         } else {
           toast.warning("Failed to send message, this is an issue from our side! Try after some time, we're sorry for this.", {
             position: "top-right",
-            autoClose: 12000,
+            autoClose: 2000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -95,7 +90,15 @@ const ContactUs = () => {
           });
         }
       } else {
-        alert("You must login first!");
+        toast.error("You must be logged in with your credentials first to make contact with the admins!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         setFormData({
           username: "",
           email: "",
@@ -172,7 +175,7 @@ const ContactUs = () => {
       <Footer />
       <ToastContainer
         position="top-left"
-        autoClose={12000}
+        autoClose={2000}
         hideProgressBar={false}
       />
     </>

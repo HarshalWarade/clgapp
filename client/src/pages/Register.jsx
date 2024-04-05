@@ -60,7 +60,6 @@ const Register = () => {
         const res_data = await response.json();
         console.log("Response from the server: ", res_data);
 
-        // storing token in the local storage
         storeTokenInStorage(res_data.token);
 
         setUser({
@@ -85,7 +84,6 @@ const Register = () => {
     <>
       <Navbar />
       <div className="flex justify-center items-center h-screen bg-gray-100">
-        {/* Registration Form */}
         <div className="w-1/3 mx-4">
           <div className="bg-white p-6 rounded-md shadow-md">
             <h2 className="text-2xl font-semibold mb-6">Registration Form</h2>
@@ -188,7 +186,6 @@ const Register = () => {
           </div>
         </div>
 
-        {/* Additional Information */}
         <div className="bg-gray-50 p-6 rounded-md shadow-md ml-4">
           <h2 className="text-xl font-semibold mb-4">Why Register?</h2>
           <p className="text-gray-700">
