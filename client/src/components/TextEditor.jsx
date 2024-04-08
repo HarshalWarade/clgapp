@@ -63,11 +63,9 @@ const TextEditor = () => {
           draggable: true,
           progress: undefined,
         });
-        // Handle error accordingly (show error message, etc.)
       }
     } catch (error) {
       console.error("Error submitting data:", error);
-      // Handle error accordingly (show error message, etc.)
     }
   };
 
@@ -199,7 +197,7 @@ const TextEditor = () => {
         <ReactQuill
           value={content}
           onChange={handleContentChange}
-          placeholder="Content"
+          placeholder="If placing a code, make sure to place it in between !!!!you code!!!!"
           className={`${isDarkMode ? "text-slate-100" : ""}`}
           required
         />

@@ -130,6 +130,13 @@ const FetchPosts = () => {
     }
   };
 
+  const replaceCodeWithStyled = (content) => {
+    const codeRegex = /!!!!(.*?)!!!!/gs;
+    return content.replace(codeRegex, (match, code) => {
+      return `<code class="consolas">${code}</code>`;
+    });
+  };
+  
   return (
     <>
       <ToastContainer position="top-left" autoClose={2000} hideProgressBar={false} />
@@ -163,8 +170,10 @@ const FetchPosts = () => {
                 ) : (
                   <>
                     <div
-                      className={`consolas ${isDarkMode ? '' : 'text-slate-500'}`}
-                      dangerouslySetInnerHTML={{ __html: blog.content }}
+                      className={`${isDarkMode ? '' : 'text-slate-500'}`}
+                      dangerouslySetInnerHTML={{
+                        __html: replaceCodeWithStyled(blog.content),
+                      }}
                       style={{ whiteSpace: 'pre-wrap' }}
                     />
                     <p className="text-gray-500 text-sm">{blog.category}</p>
