@@ -12,6 +12,8 @@ import Featured from "./Featured";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Comment from "./Comment";
+import FollowersLength from "../components/FollowersLength";
+import FollowingsLength from "../components/FollowingsLength";
 
 const Relax = () => {
   // *********************** MUST DELETE IN PRODUCTION *************************
@@ -49,6 +51,40 @@ const Relax = () => {
   const { user } = useAuth();
   const { isDarkMode } = useContext(DarkModeContext);
   const [showFeatured, setShowFeatured] = useState(false);
+
+  // getting follower's length here...
+
+  // const [followersSize, setFollowersSize] = useState(29347)
+
+  // const getFollowersLength = async () => {
+  //   try {
+  //     const response = await fetch(`http://localhost:3000/api/auth/getfollowerslength`, {
+  //       method: 'GET',
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  
+  //     if (!response.ok) {
+  //       throw new Error('Failed to fetch followers count');
+  //     }
+  
+  //     const data = await response.json();
+  
+  //     if (!data || typeof data.data !== 'number') {
+  //       throw new Error('Invalid response format');
+  //     }
+  
+  //     const followersCount = data.data;
+  //     console.log('Followers count:', followersCount);
+  //     setFollowersSize(followersCount);
+  //   } catch (error) {
+  //     console.error('Error fetching followers count:', error);
+  //     alert("Close the application, it's crashing!");
+  //   }
+  // };
+  
 
   const handleadminfirst = () => {
     toast.info("We're building this section, you must wait for around a year to use this feature! Oh! Damn.", {
@@ -125,16 +161,16 @@ const Relax = () => {
               >
                 {user.bio}
               </p>
-              <div className="flex gap-5">
+              <div className="flex py-4 justify-between">
                 <NavLink
                   className={`text-blue-500 font-semibold hover:underline`}
                 >
-                  0 followers
+                <p className="flex flex-col items-center justify-center content-center"><b className={`text-2xl font-normal`}><FollowersLength /></b> followers</p>
                 </NavLink>
                 <NavLink
                   className={`text-blue-500 font-semibold hover:underline`}
                 >
-                  0 followings
+                <p className="flex flex-col items-center justify-center content-center"><b className={`text-2xl font-normal`}><FollowingsLength /></b> followings</p>
                 </NavLink>
               </div>
               <div className="relative flex items-center content-center gap-12">
@@ -154,7 +190,7 @@ const Relax = () => {
                 >
                   Public View
                 </NavLink>
-                <NavLink
+                {/* <NavLink
                   className={`border border-sky-600/75 text-sky-600/75 py-2 px-3 flex items-center justify-center rounded-full ${
                     isDarkMode
                       ? `hover:bg-sky-500/75 hover:text-white`
@@ -164,7 +200,8 @@ const Relax = () => {
                 >
                   Explore
                 </NavLink>
-                {user.isadmin ? "" : <button onClick={delAccount}>Del Account</button>}
+                <NavLink className={`bg-red-600 rounded-md p-2`}>Get Followers Count</NavLink> */}
+                {/* {user.isadmin ? "" : <button onClick={delAccount}>Del Account</button>} */}
               </div>
             </div>
           </div>
@@ -369,7 +406,7 @@ const Relax = () => {
               {showFeatured ? <Featured /> : ""}
             </div>
           </div>
-          <div className="grid grid-cols-3 gap-6 text-slate-200">
+          <div className="text-slate-200">
             {user.featured ? (
               <div className="flex flex-wrap gap-5">
                 {user.featured.map((item, index) => (
@@ -382,7 +419,7 @@ const Relax = () => {
                     <img
                       src={item.imageUrl}
                       alt="Featured"
-                      className="mb-2 rounded-md"
+                      className="mb-2 rounded-md h-36 w-auto"
                     />
                     <h4
                       className={`text-xl font-semibold mb-2 ${

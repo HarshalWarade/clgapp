@@ -43,18 +43,20 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    followers: [
-        {
+    followers: {
+        type: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: "USER",
-        }
-    ],
-    followings: [
-        {
+        }],
+        default: []
+    },
+    followings: {
+        type: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: "USER",
-        }
-    ],
+        }],
+        default: []
+    },    
     college: {
         type: String,
         default: "No college specified, please add it from the settings page.",

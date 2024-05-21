@@ -1,7 +1,7 @@
 const express = require('express')
 const dotenv = require('dotenv')
 const cors = require('cors')
-dotenv.config({ path: 'config.env' });
+dotenv.config({ path: 'config.env' })
 const app = express()
 const port = 3000
 
@@ -19,8 +19,8 @@ app.use(express.json())
 const db = require('./utils/db')
 const authRoute = require('./router/auth-route')
 const contactRoute = require('./router/contact-router')
-const connectDB = require('./utils/db');
-const errorMiddleware = require('./middleware/error-middleware');
+const connectDB = require('./utils/db')
+const errorMiddleware = require('./middleware/error-middleware')
 
 
 app.use("/api/auth", authRoute)

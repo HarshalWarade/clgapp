@@ -133,7 +133,7 @@ const FetchPosts = () => {
   const replaceCodeWithStyled = (content) => {
     const codeRegex = /!!!!(.*?)!!!!/gs;
     return content.replace(codeRegex, (match, code) => {
-      return `<code class="consolas">${code}</code>`;
+      return `<code class="consolas h-mar-top-20">${code}</code>`;
     });
   };
   
@@ -176,7 +176,7 @@ const FetchPosts = () => {
                       }}
                       style={{ whiteSpace: 'pre-wrap' }}
                     />
-                    <p className="text-gray-500 text-sm">{blog.category}</p>
+                    <p className={`text-sm font-semibold ${isDarkMode ? "bg-gray-700 text-gray-300" : "bg-gray-200 text-gray-500"} w-max px-2 py-1 rounded-md `}>{blog.category}</p>
                     <p className="text-gray-500 text-sm">{formatDate(blog.blogCreatedAt)}</p>
                   </>
                 )}

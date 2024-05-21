@@ -27,6 +27,8 @@ router.route('/follow/:id').post(authMiddleware, authController.follow)
 router.route('/unfollow/:id').post(authMiddleware, authController.unfollow)
 router.route('/remyaccount/:id').get(authMiddleware, authController.remyaccount)
 router.route('/addfeatured/:id').post(authMiddleware, authController.addfeatured)
+router.route('/getfollowerslength').get(authMiddleware, authController.getfollowerslength)
+router.route('/getfollowinglength').get(authMiddleware, authController.getfollowinglength)
 
 // ************************* REMOVE IN PRODUCTION >>> STRICT WARNING !!! **************************
 router.route('/delabl').get(authMiddleware, authController.delabl)

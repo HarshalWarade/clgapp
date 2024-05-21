@@ -1,34 +1,34 @@
-import React, { useContext, useState } from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; // Import Quill styles
+import React, { useContext, useState } from "react"
+import ReactQuill from "react-quill"
+import "react-quill/dist/quill.snow.css"
 
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
-import { DarkModeContext } from "../context/DarkModeContext";
+import { DarkModeContext } from "../context/DarkModeContext"
 
 const TextEditor = () => {
-  const { isDarkMode } = useContext(DarkModeContext);
-  const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("");
-  const [content, setContent] = useState("");
+  const { isDarkMode } = useContext(DarkModeContext)
+  const [title, setTitle] = useState("")
+  const [category, setCategory] = useState("")
+  const [content, setContent] = useState("")
 
   const handleTitleChange = (e) => {
-    setTitle(e.target.value);
-  };
+    setTitle(e.target.value)
+  }
 
   const handleCategoryChange = (e) => {
-    setCategory(e.target.value);
-  };
+    setCategory(e.target.value)
+  }
 
   const handleContentChange = (value) => {
-    setContent(value);
-  };
+    setContent(value)
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token")
     try {
       const response = await fetch("http://localhost:3000/api/auth/postblog", {
         method: "POST",
@@ -37,8 +37,8 @@ const TextEditor = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ title, category, content }),
-      });
-      console.log(response);
+      })
+      console.log(response)
 
       if (response.ok) {
         toast.success("Post uploaded successfully!", {
@@ -49,10 +49,10 @@ const TextEditor = () => {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-        });
+        })
         setTimeout(() => {
-          location.reload();
-        }, 2000);
+          location.reload()
+        }, 2000)
       } else {
         toast.error("Cannot post!", {
           position: "top-right",
@@ -62,12 +62,12 @@ const TextEditor = () => {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-        });
+        })
       }
     } catch (error) {
-      console.error("Error submitting data:", error);
+      console.error("Error submitting data:", error)
     }
-  };
+  }
 
   return (
     <div
@@ -80,7 +80,7 @@ const TextEditor = () => {
       <form onSubmit={handleSubmit} className={`flex flex-col gap-5 ${isDarkMode ? "bg-black": "bg-slate-100"}`}>
         <input
           type="text"
-          className={`h-10 pl-3 outline-none rounded-md ${isDarkMode ? "text-slate-200 bg-slate-800 outline-none border-none" : ""}`}
+          className={`h-10 pl-3 outline-none rounded-md ${isDarkMode ? "text-slate-800 bg-slate-200 outline-none border-none" : ""}`}
           value={title}
           onChange={handleTitleChange}
           placeholder="Title"
@@ -89,7 +89,7 @@ const TextEditor = () => {
         <select
           value={category}
           onChange={handleCategoryChange}
-          className={`h-10 pl-3 outline-none rounded-md ${isDarkMode ? "bg-slate-800 text-slate-200 outline-none border-none" : ""}`}
+          className={`h-10 pl-3 outline-none rounded-md ${isDarkMode ? "bg-slate-200 text-slate-800 outline-none border-none" : ""}`}
         >
           <option value="wontRank">Choose category</option>
           <option value="Agile Methodologies">Agile Methodologies</option>
@@ -194,11 +194,12 @@ const TextEditor = () => {
           <option value="Yarn">Yarn</option>
           <option value="Zsh">Zsh</option>
         </select>
+        
         <ReactQuill
           value={content}
           onChange={handleContentChange}
-          placeholder="If placing a code, make sure to place it in between !!!!you code!!!!"
-          className={`${isDarkMode ? "text-slate-100" : ""}`}
+          placeholder="If placing a code, make sure to place it in between !!!!your code!!!!"
+          className={`border-none outline-none rounded-md ${isDarkMode ? "bg-slate-200 text-slate-800" : "bg-white text-gray-800"}`}
           required
         />
         <button
@@ -214,7 +215,7 @@ const TextEditor = () => {
         hideProgressBar={false}
       />
     </div>
-  );
-};
+  )
+}
 
-export default TextEditor;
+export default TextEditor

@@ -214,7 +214,7 @@ const UserProfile = () => {
                       href={item.visitLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-sky-300 w-full text-white flex items-center content-center justify-center p-2 rounded-md hover:bg-sky-400"
+                      className={`w-full ${isDarkMode ? "text-white bg-orange-500" : "bg-orange-500 text-white"} flex items-center content-center justify-center p-2 rounded-md`}
                     >
                       Visit Link
                     </a>
