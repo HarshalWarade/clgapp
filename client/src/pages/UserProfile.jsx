@@ -5,15 +5,113 @@ import Navbar from "../components/Navbar";
 import { DarkModeContext } from "../context/DarkModeContext";
 import ImgCard from "../components/ImgCard";
 import PostCard from "../components/PostCard";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+// import FollowersLength from "../components/FollowersLength";
+// import FollowingsLength from "../components/FollowingsLength";
 
 const UserProfile = () => {
   const { isDarkMode } = useContext(DarkModeContext);
   const { token, user } = useAuth();
   const { id } = useParams();
   const [userData, setUserData] = useState(null);
+  const currUser = useAuth()
   const [userPosts, setUserPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isFollowing, setIsFollowing] = useState(false)
+  const [followersSize, setFollowersSize] = useState(0)
+  const [followingsSize, setFollowingsSize] = useState(0)
+
+  const checkFollowingStatus = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/auth/isfollowing/${id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      if(response.ok) {
+        setIsFollowing(true)
+      } else {
+        setIsFollowing(false)
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  
+  useEffect(() => {
+    checkFollowingStatus();
+  }, [id]);
+
+  const getFollowersLength = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/auth/getfollowerslength/${id}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch followers count');
+      }
+
+      const data = await response.json();
+
+      if (!data || typeof data.data !== 'number') {
+        throw new Error('Invalid response format');
+      }
+
+      const followersCount = data.data;
+      // console.log('Followers count:', followersCount);
+      setFollowersSize(followersCount);
+    } catch (error) {
+      console.error('Error fetching followers count:', error);
+      // alert("Close the application, it's crashing!");
+    }
+  }
+
+  useEffect(() => {
+    getFollowersLength();
+  }, [id]);
+
+  const getfollowinglength = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/auth/getfollowinglength/${id}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch followings count')
+      }
+
+      const data = await response.json()
+
+      if (!data || typeof data.data !== 'number') {
+        throw new Error('Invalid response format')
+      }
+
+      const followingsCount = data.data
+      // console.log('Followers count:', followingsCount)
+      setFollowingsSize(followingsCount)
+    } catch (error) {
+      console.error('Error fetching followings count:', error)
+      // alert("Close the application, it's crashing!")
+    }
+  }
+
+  useEffect(() => {
+    getfollowinglength()
+  }, [])
 
   const formatDate = (dateString) => {
     const options = {
@@ -30,6 +128,106 @@ const UserProfile = () => {
     );
     return formattedDate;
   };
+
+  const handleFollow = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/auth/follow/${id}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      if(response.ok) {
+        toast.success(data.message || "You're now following this account", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } else {
+        toast.error(data.message || "Failed to follow this account!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred while trying to follow the account.", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  }
+
+  const handleUnfollow = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/auth/unfollow/${id}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json()
+      if(response.ok) {
+        toast.success(data.message || "Unfollowed Successfully", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setTimeout(() => {
+          location.reload()
+        }, 2000);
+      } else {
+        toast.error(data.message || "Failed to unfollow this account!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    } catch (err) {
+      toast.error("Error from our side, we're fixing it right away!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      console.log("Error at handle Unfollow function -> Frontend")
+    }
+  }
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,10 +281,10 @@ const UserProfile = () => {
   const loadingContent = (
     <div
       className="flex flex-col gap-5 items-center justify-center content-center min-h-screen"
-      style={{ background: "#000000" }}
+      style={{ background: "#0C0C0C" }}
     >
       <img
-        src="https://miro.medium.com/v2/resize:fit:1400/1*okbBhXU2x0f_eFyUVyc-gA.gif"
+        src="https://cdn.dribbble.com/users/121337/screenshots/1024835/loading2.gif"
         alt="loading..."
       />
       {/* <h1 className="text-3xl text-white">Loading... Please Wait</h1> */}
@@ -127,23 +325,33 @@ const UserProfile = () => {
                 isDarkMode ? `bg-indigo-200 text-black` : `bg-sky-200/75`
               }`}
             ></i>
-            <p className={`flex flex-col gap-5 text-2xl font-semibold`}>
-              <p className={`${isDarkMode ? "text-slate-100" : ""}`}>
+            <div className={`flex flex-col gap-5`}>
+              <div className={`text-2xl font-semibold ${isDarkMode ? "text-slate-100" : ""}`}>
                 {userData.firstName} {userData.lastName}
-              </p>
-              <p className={`text-xl ${isDarkMode ? "text-slate-300" : ""}`}>
+              </div>
+              <div className={`flex justify-between`}>
+                <div className={`flex items-center content-center justify-center flex-col`}>
+                  <h1 className={`text-2xl font-semibold ${isDarkMode ? "text-slate-100" : "text-black"}`}>{followersSize}</h1>
+                  <h2 className={`${isDarkMode ? "text-slate-100" : "text-black"}`}>Followers</h2>
+                </div>
+                <div className={`flex items-center content-center justify-center flex-col`}>
+                  <h1 className={`text-2xl font-semibold ${isDarkMode ? "text-slate-100" : "text-black"}`}>{followingsSize}</h1>
+                  <h2 className={`${isDarkMode ? "text-slate-100" : "text-black"}`}>Followings</h2>
+                </div>
+              </div>
+              <div className={`w-min text-lg cursor-pointer ${isDarkMode ? "text-blue-400" : "text-blue-500"}`}>
                 @{userData.username}
-              </p>
+              </div>
               {userData.bio ? (
-                <p className={`text-sm ${isDarkMode ? "text-slate-200" : ""}`}>
+                <div className={`text-md ${isDarkMode ? "text-slate-200" : ""}`}>
                   {userData.bio}
-                </p>
+                </div>
               ) : (
-                <p className={`text-sm ${isDarkMode ? "text-slate-200" : ""}`}>
+                <div className={`text-sm ${isDarkMode ? "text-slate-200" : ""}`}>
                   No bio
-                </p>
+                </div>
               )}
-            </p>
+            </div>
             <div
               className={`flex justify-evenly ${
                 isDarkMode ? "text-slate-200" : "text-slate-700"
@@ -163,6 +371,46 @@ const UserProfile = () => {
                 )}
               </p>
             </div>
+            {
+              user._id === id 
+              ? ""
+              : (
+                currUser._id === id 
+                ? ''
+                : (
+                  <div>
+                    {isFollowing ? 
+                    (
+                      <button 
+                      onClick={() => handleUnfollow()} 
+                      className={`p-3 rounded-md ${
+                        isDarkMode 
+                        ? "text-blue-500 border border-blue-500 hover:bg-blue-500 hover:text-gray-900" 
+                        : "border border-blue-400 bg-blue-100 text-blue-700 hover:bg-blue-400 hover:text-slate-50"
+                      }`}
+                    >
+                      Unfollow
+                    </button>
+                    )
+                    : 
+                    (
+                      <button 
+                      onClick={handleFollow} 
+                      className={`p-3 rounded-md ${
+                        isDarkMode 
+                        ? "text-blue-500 border border-blue-500 hover:bg-blue-500 hover:text-gray-900" 
+                        : "border border-blue-400 bg-blue-100 text-blue-700 hover:bg-blue-400 hover:text-slate-50"
+                      }`}
+                    >
+                      Follow
+                    </button>
+                    )                    
+                    }
+                  </div>
+                )
+              )
+            }
+
           </div>
         </div>
 
@@ -197,28 +445,44 @@ const UserProfile = () => {
           >
             Featured
           </h2>
-          <div className="grid grid-cols-3 gap-6 text-slate-200">
+          <div className="text-slate-200">
           {userData.featured ? (
               <div className="flex flex-wrap gap-5">
                 {userData.featured.map((item, index) => (
                   <div
-                    key={index}
-                    className={`${isDarkMode ? "border border-gray-700" : "border"} rounded-md p-4 mb-4 flex flex-col gap-3 items-center`}
+                  key={index}
+                  className={`${
+                    isDarkMode ? "border border-gray-700" : "border"
+                  } rounded-md p-4 mb-4 flex flex-col gap-3 items-center`}
+                >
+                  <img
+                    src={item.imageUrl}
+                    alt="Featured"
+                    className="mb-2 rounded-md h-36 w-auto"
+                  />
+                  <h4
+                    className={`text-xl font-semibold mb-2 ${
+                      isDarkMode ? "text-slate-200" : "text-slate-800"
+                    }`}
                   >
-                    <img src={item.imageUrl} alt="Featured" className="mb-2 rounded-md" />
-                    <h4 className={`text-xl font-semibold mb-2 ${isDarkMode ? "text-slate-200" : "text-slate-800"}`}>
-                      {item.heading}
-                    </h4>
-                    <p className={`mb-2 ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>{item.content}</p>
-                    <a
-                      href={item.visitLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`w-full ${isDarkMode ? "text-white bg-orange-500" : "bg-orange-500 text-white"} flex items-center content-center justify-center p-2 rounded-md`}
-                    >
-                      Visit Link
-                    </a>
-                  </div>
+                    {item.heading}
+                  </h4>
+                  <p
+                    className={`mb-2 ${
+                      isDarkMode ? "text-slate-300" : "text-slate-700"
+                    }`}
+                  >
+                    {item.content}
+                  </p>
+                  <a
+                    href={item.visitLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-blue-500 w-full text-white flex items-center content-center justify-center p-2 rounded-md hover:bg-blue-600"
+                  >
+                    Visit Link
+                  </a>
+                </div>
                 ))}
               </div >
             ) : (
@@ -244,6 +508,7 @@ const UserProfile = () => {
             {userPosts.map((post) => (
               <PostCard
                 key={post._id}
+                postId={post._id}
                 title={post.title}
                 category={post.category}
                 timing={formatDate(post.blogCreatedAt)}
@@ -289,6 +554,11 @@ const UserProfile = () => {
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="top-left"
+        autoClose={2000}
+        hideProgressBar={false}
+      />
     </>
   );
 

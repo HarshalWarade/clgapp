@@ -3,11 +3,12 @@ import { createContext, useContext, useEffect, useState } from "react";
 // context
 export const AuthContext = createContext()
 
-// provider
+// provider -> ye provide krega further run me
 export const AuthProvider = ({children}) => {
 
     const [token, setToken] = useState(localStorage.getItem('token'))
     const [user, setUser] = useState("")
+    const [id, setid] = useState(user._id)
 
     const storeTokenInStorage = (serverToken) => {
         return localStorage.setItem('token', serverToken)
@@ -35,6 +36,7 @@ export const AuthProvider = ({children}) => {
             if(response.ok) {
                 const data = await response.json()
                 setUser(data)
+                setid(user._id)
             }
         } catch (err) {
             console.log(err)
@@ -47,7 +49,7 @@ export const AuthProvider = ({children}) => {
 
     const tokValue = token
 
-    return <AuthContext.Provider value={{ isLoggedIn, storeTokenInStorage, LogOutUser, user, token }}>
+    return <AuthContext.Provider value={{ isLoggedIn, storeTokenInStorage, LogOutUser, user, token, id }}>
         {children}
     </AuthContext.Provider>
 }

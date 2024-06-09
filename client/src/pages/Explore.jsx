@@ -134,9 +134,10 @@ const Explore = () => {
           <div className={`flex gap-10 flex-wrap ${isDarkMode ? "" : ""}`}>
             {users.map((user) => (
               <div
-                className={`flex w-max p-5 rounded-md flex-col gap-5 items-center content-center justify-center bg-white ${
-                  isDarkMode ? "" : ""
+                className={`flex w-max p-5 rounded-md flex-col gap-5 items-center content-center justify-center ${
+                  isDarkMode ? "" : "bg-white shadow-sm"
                 }`}
+                style={isDarkMode ? { background: "#1B1F23" } : {}}
                 key={user._id}
               >
                 <i className="fa-light bg-orange-100 p-8 rounded-full fa-user text-5xl"></i>

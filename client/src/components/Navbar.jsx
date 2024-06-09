@@ -10,7 +10,7 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`sm:flex border-slate-500 md:flex md:items-center md:justify-evenly h-auto py-4 ${
+        className={`flex items-center justify-evenly sm:flex border-slate-500 md:flex md:items-center md:justify-evenly h-auto py-4 ${
           isDarkMode ? `border-none` : `bg-white`
         }`}
         style={isDarkMode ? { background: "#1B1F23" } : {}}

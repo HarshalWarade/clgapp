@@ -231,21 +231,28 @@ const settings = async (req, res) => {
 
 const follow = async (req, res) => {
   try {
-    const userToFollow = await User.findById(req.params.userId)
+    
+    const userTwo = req.params.id
+    const userOne = req.user
 
-    if (!userToFollow) {
-      return res.status(404).json({ message: 'User not found' })
+    if(userTwo === userOne._id) {
+      return res.status(400).json({message: "C'mon, you can't follow yourself!"})
     }
 
-    const isAlreadyFollowing = req.user.following.includes(req.params.userId)
-
-    if (isAlreadyFollowing) {
-      return res.status(400).json({ message: 'You are already following this user' })
+    const targetUser = await User.findById(userTwo)
+    
+    if(!targetUser) {
+      return res.status(400).json({message: "This user doesn't exists!"})
     }
+    if(userOne.followings.includes(userTwo)) {
+      return res.status(400).json({message: "You are already following this user!"})
+    }
+    userOne.followings.push(userTwo)
+    await userOne.save()
 
-    req.user.following.push(req.params.userId)
-    await req.user.save()
-
+    targetUser.followers.push(userOne._id)
+    await targetUser.save()
+    
     res.status(200).json({ message: 'User followed successfully' })
   } catch (error) {
     console.error(error)
@@ -253,29 +260,83 @@ const follow = async (req, res) => {
   }
 }
 
+
 const unfollow = async (req, res) => {
   try {
-    const userToUnfollow = await User.findById(req.params.userId)
+    
+    const userTwo = req.params.id
+    const userOne = req.user
 
-    if (!userToUnfollow) {
-      return res.status(404).json({ message: 'User not found' })
+    if(userTwo === userOne._id) {
+      return res.status(400).json({message: "C'mon, you can't follow yourself!"})
     }
 
-    const isFollowing = req.user.following.includes(req.params.userId)
-
-    if (!isFollowing) {
-      return res.status(400).json({ message: 'You are not following this user' })
+    const targetUser = await User.findById(userTwo)
+    
+    if(!targetUser) {
+      return res.status(400).json({message: "This user doesn't exists!"})
     }
+    if(!userOne.followings.includes(userTwo)) {
+      return res.status(400).json({message: "You are not following this user!"})
+    }
+    userOne.followings.pull(userTwo)
+    await userOne.save()
 
-    req.user.following = req.user.following.filter(id => id.toString() !== req.params.userId)
-    await req.user.save()
-
-    res.status(200).json({ message: 'User unfollowed successfully' })
+    targetUser.followers.pull(userOne._id)
+    await targetUser.save()
+    
+    res.status(200).json({ message: 'User followed successfully' })
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: 'Internal server error' })
   }
 }
+
+const isfollowing = async (req, res) => {
+  try {
+    const otherUser = req.params.id
+    const currentUser = req.user
+
+    const isPresentinFollowing = await User.findOne({
+      _id: currentUser._id,
+      followings: {$in: [otherUser]}
+    })
+
+    if(isPresentinFollowing) {
+      return res.status(200).json({message: "Gotchaaa!"})
+    } else {
+      return res.status(400).json({message: "Don't know!"})
+    }
+
+
+  } catch (err) {
+    console.log(`Error at isfollowing function: ${err}`)
+  }
+}
+
+// const unfollow = async (req, res) => {
+//   try {
+//     const userToUnfollow = await User.findById(req.params.userId)
+
+//     if (!userToUnfollow) {
+//       return res.status(404).json({ message: 'User not found' })
+//     }
+
+//     const isFollowing = req.user.following.includes(req.params.userId)
+
+//     if (!isFollowing) {
+//       return res.status(400).json({ message: 'You are not following this user' })
+//     }
+
+//     req.user.following = req.user.following.filter(id => id.toString() !== req.params.userId)
+//     await req.user.save()
+
+//     res.status(200).json({ message: 'User unfollowed successfully' })
+//   } catch (error) {
+//     console.error(error)
+//     res.status(500).json({ message: 'Internal server error' })
+//   }
+// }
 
 
 const remyaccount = async (req, res) => {
@@ -289,12 +350,30 @@ const remyaccount = async (req, res) => {
   
 }
 
+// temp functions -> 2
+const myfollowerslength = async (req, res) => {
+  try {
+    console.log(req.user)
+    const userId = req.user._id
+    const findUser = await User.findById(userId)
+    if(!findUser) {
+      return res.status(400).json({message: "Userxcvxc not found!"})
+    }
+    const followersSize = findUser.followers.length
+    console.log("Backend: ", followersSize)
+    return res.status(200).json({data: followersSize})
+  } catch (err) {
+    console.log(err)
+    return res.status(400).json({message: "Error at myFollowersLength function in auth-controller.js file"})
+  }
+}
+
 const getfollowerslength = async (req, res) => {
   try {
-    const userId = req.user._id
+    const userId = req.params.id
     const user = await User.findById(userId)
     if (!user) {
-      return res.status(404).json({ message: "User not found!" })
+      return res.status(404).json({ message: "Userasdasdasdas not found!" })
     }
     const followersSize = user.followers.length
     return res.status(200).json({data: followersSize})
@@ -305,12 +384,14 @@ const getfollowerslength = async (req, res) => {
 }
 const getfollowinglength = async (req, res) => {
   try {
-    const userId = req.user._id
+    const userId = req.params.id
+    console.log(userId)
     const user = await User.findById(userId)
     if(!user) {
       return res.status(404).json({message: "User not found!"})
     }
     const followingSize = user.followings.length
+    console.log(followingSize)
     return res.status(200).json({data: followingSize})
   } catch (err) {
     return res.status(500).json({message: "Failed to get following count!"})
@@ -344,6 +425,54 @@ const addfeatured = async (req, res) => {
   } catch (error) {
       console.error('Error adding featured item:', error)
       return res.status(500).json({ error: 'Internal server error' })
+  }
+}
+
+const like = async (req, res) => {
+  try {
+    const blogId = req.params.id
+    const currBlog = await Blog.findById(blogId)
+    
+    const user = req.user
+    if(!currBlog) {
+      return res.status(400).json({message: "This blog doesn't exists!"})
+    }
+    let count = 0
+    if(currBlog.likes.includes(user._id)) {
+      count = -10
+      currBlog.likes.pull(user._id)
+    } else {
+      count = 10
+      currBlog.likes.push(user._id)
+    }
+
+    await currBlog.save()
+
+    if(count === 10) {
+      return res.status(200).json({message: "Blog liked!", isLiked: true})
+    }
+    if(count === -10) {
+      return res.status(200).json({message: "Like removed!", isLiked: false})
+    }
+
+  } catch (err) {
+    console.log(`Error in like implementation -> Backend ==> ${err}`)
+    return res.status(400).json({message: "Failed to like this post!"})
+  }
+}
+
+const likescount = async (req, res) => {
+  try {
+    const blogId = req.params.id
+    const currBlog = await Blog.findById(blogId)
+    if(!currBlog) {
+      return res.status(400).json({message: "Blog does not exists!"})
+    }
+    // console.log(currBlog.likes)
+    return res.status(200).json({data: currBlog.likes.length})
+  } catch (err) {
+    console.log("Failed to get the like counts: ", err)
+    return res.status(400).json({message: "Failed to get the like counts -> Backend"})
   }
 }
 
@@ -411,4 +540,8 @@ module.exports = {
   addfeatured,
   getfollowerslength,
   getfollowinglength,
+  isfollowing,
+  myfollowerslength,
+  like,
+  likescount
 }

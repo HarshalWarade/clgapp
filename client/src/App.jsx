@@ -11,6 +11,7 @@ import ContactUs from "./pages/ContactUs"
 import Explore from "./pages/Explore"
 import UserProfile from "./pages/UserProfile"
 import Settings from "./pages/Settings"
+import AuthHome from "./pages/AuthHome"
 
 const App = () => {
   const { isLoggedIn } = useAuth()
@@ -18,7 +19,11 @@ const App = () => {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
+          {isLoggedIn ? (
+            <Route path="/" element={<AuthHome />} />
+          ) : (
+            <Route path="/" element={<Home />} />
+          )}
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/getStarted" element={<Register />} />

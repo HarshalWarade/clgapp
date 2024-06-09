@@ -23,12 +23,16 @@ router.route('/deleteblog/:id').delete(authMiddleware, authController.delBlog);
 router.route('/viewprofile/:id').get(authMiddleware, authController.viewprofile);
 router.route('/getallusers').get(authMiddleware, authController.getallusers)
 router.route('/settings/:id').put(authMiddleware, authController.settings)
-router.route('/follow/:id').post(authMiddleware, authController.follow)
-router.route('/unfollow/:id').post(authMiddleware, authController.unfollow)
+router.route('/follow/:id').get(authMiddleware, authController.follow)
+router.route('/isfollowing/:id').get(authMiddleware, authController.isfollowing)
+router.route('/unfollow/:id').get(authMiddleware, authController.unfollow)
 router.route('/remyaccount/:id').get(authMiddleware, authController.remyaccount)
 router.route('/addfeatured/:id').post(authMiddleware, authController.addfeatured)
-router.route('/getfollowerslength').get(authMiddleware, authController.getfollowerslength)
-router.route('/getfollowinglength').get(authMiddleware, authController.getfollowinglength)
+router.route('/getfollowerslength/:id').get(authMiddleware, authController.getfollowerslength)
+router.route('/getfollowinglength/:id').get(authMiddleware, authController.getfollowinglength)
+router.route('/myfollowerslength').get(authMiddleware, authController.myfollowerslength)
+router.route('/like/:id').post(authMiddleware, authController.like)
+router.route('/likescount/:id').get(authMiddleware, authController.likescount)
 
 // ************************* REMOVE IN PRODUCTION >>> STRICT WARNING !!! **************************
 router.route('/delabl').get(authMiddleware, authController.delabl)

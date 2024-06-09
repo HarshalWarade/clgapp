@@ -59,23 +59,23 @@ const userSchema = new mongoose.Schema({
     },    
     college: {
         type: String,
-        default: "No college specified, please add it from the settings page.",
+        default: "No college specified.",
     },
     bio: {
         type: String,
-        default: "No bio specified, you can add it from the settings page.",
+        default: "No bio specified.",
     },
     about: {
         type: String,
-        default: "No 'about' added, you can add it from the settings page.",
+        default: "No 'about' added.",
     },
     dob: {
         type: String,
-        default: "No 'dob' specified, you can add it from the settings page.",
+        default: "No 'dob' specified.",
     },
     phone: {
         type: String,
-        default: "No contact number mentioned, please add it from the settings page.",
+        default: "No contact number mentioned.",
     },
     skills: {
         type: [String],

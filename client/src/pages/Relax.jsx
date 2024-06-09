@@ -11,11 +11,13 @@ import FetchPosts from "../components/FetchPosts";
 import Featured from "./Featured";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Comment from "./Comment";
-import FollowersLength from "../components/FollowersLength";
-import FollowingsLength from "../components/FollowingsLength";
 
+import Comment from "./Comment";
+import AboutLine from "../components/AboutLine";
+// import0om "../components0// import FollowingsLength from "../components/FollowingsLength";
+// import M0om "../components/M0
 const Relax = () => {
+  // console.log(user)
   // *********************** MUST DELETE IN PRODUCTION *************************
   const { token } = useAuth();
 
@@ -52,38 +54,81 @@ const Relax = () => {
   const { isDarkMode } = useContext(DarkModeContext);
   const [showFeatured, setShowFeatured] = useState(false);
 
-  // getting follower's length here...
+  let id = user._id
+  // console.log(id)
 
-  // const [followersSize, setFollowersSize] = useState(29347)
+  const [followersSize, setFollowersSize] = useState(0)
+  const [followingsSize, setFollowingsSize] = useState(0)
 
-  // const getFollowersLength = async () => {
-  //   try {
-  //     const response = await fetch(`http://localhost:3000/api/auth/getfollowerslength`, {
-  //       method: 'GET',
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  
-  //     if (!response.ok) {
-  //       throw new Error('Failed to fetch followers count');
-  //     }
-  
-  //     const data = await response.json();
-  
-  //     if (!data || typeof data.data !== 'number') {
-  //       throw new Error('Invalid response format');
-  //     }
-  
-  //     const followersCount = data.data;
-  //     console.log('Followers count:', followersCount);
-  //     setFollowersSize(followersCount);
-  //   } catch (error) {
-  //     console.error('Error fetching followers count:', error);
-  //     alert("Close the application, it's crashing!");
-  //   }
-  // };
+  const getFollowersLength = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/auth/getfollowerslength/${id}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        console.log("Green Flag from st 1")
+      } else {
+        throw new Error('Failed to fetch followers count');
+      }
+
+      const data = await response.json();
+
+      if (!data || typeof data.data !== 'number') {
+        throw new Error('Invalid response format');
+      }
+
+      const followersCount = data.data;
+      // console.log('Followers count:', followersCount);
+      setFollowersSize(followersCount);
+    } catch (error) {
+      console.error('Error fetching followers count:', error);
+      // alert("Close the application, it's crashing!");
+    }
+  }
+
+  useEffect(() => {
+    getFollowersLength();
+  }, [id]);
+
+  const getfollowinglength = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/auth/getfollowinglength/${id}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
+
+      if (response.ok) {
+        console.log("Green flag from st 2")
+      } else {
+        throw new Error('Failed to fetch followings count')
+      }
+
+      const data = await response.json()
+
+      if (!data || typeof data.data !== 'number') {
+        throw new Error('Invalid response format')
+      }
+
+      const followingsCount = data.data
+      // console.log('Followers count:', followingsCount)
+      setFollowingsSize(followingsCount)
+    } catch (error) {
+      console.error('Error fetching followings count:', error)
+      // alert("Close the application, it's crashing!")
+    }
+  }
+
+  useEffect(() => {
+    getfollowinglength()
+  }, [id])
   
 
   const handleadminfirst = () => {
@@ -165,12 +210,12 @@ const Relax = () => {
                 <NavLink
                   className={`text-blue-500 font-semibold hover:underline`}
                 >
-                <p className="flex flex-col items-center justify-center content-center"><b className={`text-2xl font-normal`}><FollowersLength /></b> followers</p>
+                <p className="flex flex-col items-center justify-center content-center"><b className={`text-2xl font-normal`}>{followersSize}</b> followers</p>
                 </NavLink>
                 <NavLink
                   className={`text-blue-500 font-semibold hover:underline`}
                 >
-                <p className="flex flex-col items-center justify-center content-center"><b className={`text-2xl font-normal`}><FollowingsLength /></b> followings</p>
+                <p className="flex flex-col items-center justify-center content-center"><b className={`text-2xl font-normal`}>{followingsSize}</b> followings</p>
                 </NavLink>
               </div>
               <div className="relative flex items-center content-center gap-12">
@@ -353,7 +398,7 @@ const Relax = () => {
               isDarkMode ? `text-slate-300` : `text-slate-500`
             }`}
           >
-            <p>{user.about}</p>
+            <p><AboutLine /></p>
           </div>
           <div
             className={`border flex flex-col gap-5 mt-2 rounded-md text-slate-400 p-5 ${
