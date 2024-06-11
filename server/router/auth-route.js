@@ -33,6 +33,8 @@ router.route('/getfollowinglength/:id').get(authMiddleware, authController.getfo
 router.route('/myfollowerslength').get(authMiddleware, authController.myfollowerslength)
 router.route('/like/:id').post(authMiddleware, authController.like)
 router.route('/likescount/:id').get(authMiddleware, authController.likescount)
+router.route('/followingblogs').get(authMiddleware, authController.followingblogs)
+router.route('/whoisauthor/:id').get(authMiddleware, authController.whoisauthor)
 
 // ************************* REMOVE IN PRODUCTION >>> STRICT WARNING !!! **************************
 router.route('/delabl').get(authMiddleware, authController.delabl)

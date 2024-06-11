@@ -54,9 +54,14 @@ const register = async (req, res) => {
     const { firstName, lastName, username, email, password } = req.body
 
     const userExist = await User.findOne({ email: email })
+    const usernameExists = await User.findOne({username: username})
 
     if (userExist) {
       return res.status(400).json({ msg: "Email already exists!" })
+    }
+
+    if(usernameExists) {
+      return res.status(400).json({msg: "Username already exists, try another one!"})
     }
 
     const saltRound = 10
@@ -385,13 +390,13 @@ const getfollowerslength = async (req, res) => {
 const getfollowinglength = async (req, res) => {
   try {
     const userId = req.params.id
-    console.log(userId)
+    // console.log(userId)
     const user = await User.findById(userId)
     if(!user) {
       return res.status(404).json({message: "User not found!"})
     }
     const followingSize = user.followings.length
-    console.log(followingSize)
+    // console.log(followingSize)
     return res.status(200).json({data: followingSize})
   } catch (err) {
     return res.status(500).json({message: "Failed to get following count!"})
@@ -476,6 +481,45 @@ const likescount = async (req, res) => {
   }
 }
 
+const followingblogs = async (req, res) => {
+  try {
+    const user = req.user;
+
+    const followingUsers = await User.find({ _id: { $in: user.followings } });
+    
+    if (!followingUsers || followingUsers.length === 0) {
+      return res.status(400).json({ message: "You're not following any user!" });
+    }
+
+    const followingUserIds = followingUsers.map(user => user._id);
+    const blogs = await Blog.find({ author: { $in: followingUserIds } });
+
+    return res.status(200).json({ data: blogs });
+  } catch (err) {
+    console.log(`Error in followingblogs -> backend => ${err}`);
+    return res.status(500).json({ message: "Server error, fixing it soon, relax!" });
+  }
+};
+
+const whoisauthor = async (req, res) => {
+  try {
+    const blogId = req.params.id
+    const thatBlog = await Blog.findById(blogId)
+    const thatAuthor = thatBlog.author
+
+    const thatAuthorData = await User.findById(thatAuthor)
+    const thatAuthorId = thatAuthorData._id
+    const thatAuthorUsername = thatAuthorData.username
+
+
+    // console.log("author back: ", thatAuthorUsername)
+    return res.status(200).json({message: thatAuthorUsername, authorId: thatAuthorId})
+  } catch (err) {
+    console.log("Error at backend, whoisauthor, ", err)
+    return res.status(400).json({message: "Server error, we're fixing it hold on, or you may report through contact us page!"})
+  }
+}
+
 
 // ************ STRICT WARNING >>> DELETE BEFORE PRODUCTION ****************************
 
@@ -543,5 +587,7 @@ module.exports = {
   isfollowing,
   myfollowerslength,
   like,
-  likescount
+  likescount,
+  followingblogs,
+  whoisauthor
 }

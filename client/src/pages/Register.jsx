@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import { useAuth } from "../store/auth";
-import { NavLink, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React, { useState } from "react"
+import Navbar from "../components/Navbar"
+import Footer from "../components/Footer"
+import { useAuth } from "../store/auth"
+import { NavLink, useNavigate } from "react-router-dom"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 const Register = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   // initial stages bandiye.. later edit krnaar...
   const [user, setUser] = useState({
@@ -16,25 +16,25 @@ const Register = () => {
     email: "",
     password: "",
     username: "",
-  });
+  })
 
-  const { storeTokenInStorage } = useAuth();
+  const { storeTokenInStorage } = useAuth()
 
   // handling inputs -> using by default event
   const handleInput = (e) => {
     // e.preventDefault() // -> for submission only... field saathi naste
-    let name = e.target.name;
-    let value = e.target.value;
+    let name = e.target.name
+    let value = e.target.value
     // console.log(value)
     setUser({
       ...user,
       [name]: value,
-    });
-  };
+    })
+  }
 
   // handling form submission
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     // console.log(user)
 
     // send data to server
@@ -45,22 +45,25 @@ const Register = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(user),
-      });
+      })
 
       if (response.ok) {
-        toast.success("Registered Successfully! You'll be naviagted to login page within 12 seconds.", {
-          position: "top-right",
-          autoClose: 12000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        const res_data = await response.json();
-        console.log("Response from the server: ", res_data);
+        toast.success(
+          "Registered Successfully! You'll be naviagted to login page within 12 seconds.",
+          {
+            position: "top-right",
+            autoClose: 12000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          }
+        )
+        const res_data = await response.json()
+        console.log("Response from the server: ", res_data)
 
-        storeTokenInStorage(res_data.token);
+        storeTokenInStorage(res_data.token)
 
         setUser({
           firstName: "",
@@ -68,17 +71,17 @@ const Register = () => {
           email: "",
           password: "",
           username: "",
-        });
+        })
         setTimeout(() => {
-          navigate("/login");
-        }, 12000);
+          navigate("/login")
+        }, 12000)
       }
 
-      // console.log(response);
+      // console.log(response)
     } catch (error) {
-      console.log("Registration server error: ", error);
+      console.log("Registration server error: ", error)
     }
-  };
+  }
 
   return (
     <>
@@ -180,7 +183,9 @@ const Register = () => {
                 >
                   Register
                 </button>
-                <NavLink className={`text-blue-500 underline`} to={`/login`}>Already a user</NavLink>
+                <NavLink className={`text-blue-500 underline`} to={`/login`}>
+                  Already a user
+                </NavLink>
               </div>
             </form>
           </div>
@@ -201,7 +206,7 @@ const Register = () => {
         hideProgressBar={false}
       />
     </>
-  );
-};
+  )
+}
 
-export default Register;
+export default Register

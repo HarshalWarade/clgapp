@@ -1,8 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { DarkModeContext } from "../context/DarkModeContext";
 import { useAuth } from "../store/auth";
+import { NavLink } from "react-router-dom";
 const PostCard = (prop) => {
   const [likeCounts, setLikeCounts] = useState(0);
+  const [author, setAuthor] = useState('The great Author')
+  const [authorId, setAuthorId] = useState(0)
   const [isLiked, setIsLiked] = useState(false);
   const { token } = useAuth();
   const replaceCodeWithStyled = (content) => {
@@ -59,8 +62,31 @@ const PostCard = (prop) => {
     }
   };
 
+  const whoisauthor = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/auth/whoisauthor/${prop.postId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if(response.ok) {
+        const data = await response.json()
+        setAuthor(data.message)
+        setAuthorId(data.authorId)
+      }
+    } catch (err) {
+      console.log("Error in whoisauthor frontend: ", err)
+    }
+  }
+
   useEffect(() => {
     likesCount();
+    whoisauthor();
   }, []);
 
   var today = new Date();
@@ -69,9 +95,10 @@ const PostCard = (prop) => {
   return (
     <>
       <div
-        className={`flex h-min p-5 rounded-md ${
-          isDarkMode ? "border border-slate-600" : "bg-slate-50"
+        className={`mb-3 flex h-min p-5 rounded-md ${
+          isDarkMode ? "text-slate-200" : "bg-white"
         } flex-col gap-5`}
+        style={isDarkMode ? { background: "#1D2226" } : {}}
       >
         <h1
           className={`text-2xl font-semibold ${
@@ -80,6 +107,9 @@ const PostCard = (prop) => {
         >
           {prop.title}
         </h1>
+        <div className="w-min">
+          <NavLink to={`http://localhost:5173/profile/${authorId}`}><p className={`text-sm text-blue-500`}>@{author}</p></NavLink>
+        </div>
         <div
           className={`${isDarkMode ? "text-slate-300" : "text-slate-500"}`}
           dangerouslySetInnerHTML={{

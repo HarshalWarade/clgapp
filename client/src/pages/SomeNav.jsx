@@ -6,7 +6,7 @@ const SomeNav = () => {
     const {isDarkMode} = useContext(DarkModeContext)
   return (
     <div className={`${ isDarkMode ? "" : "bg-gray-300" }`}>
-        {user.username} 
+        {user.username}
     </div>
   )
 }
