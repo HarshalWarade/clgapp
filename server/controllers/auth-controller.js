@@ -318,32 +318,6 @@ const isfollowing = async (req, res) => {
     console.log(`Error at isfollowing function: ${err}`)
   }
 }
-
-// const unfollow = async (req, res) => {
-//   try {
-//     const userToUnfollow = await User.findById(req.params.userId)
-
-//     if (!userToUnfollow) {
-//       return res.status(404).json({ message: 'User not found' })
-//     }
-
-//     const isFollowing = req.user.following.includes(req.params.userId)
-
-//     if (!isFollowing) {
-//       return res.status(400).json({ message: 'You are not following this user' })
-//     }
-
-//     req.user.following = req.user.following.filter(id => id.toString() !== req.params.userId)
-//     await req.user.save()
-
-//     res.status(200).json({ message: 'User unfollowed successfully' })
-//   } catch (error) {
-//     console.error(error)
-//     res.status(500).json({ message: 'Internal server error' })
-//   }
-// }
-
-
 const remyaccount = async (req, res) => {
   try {
     await User.findByIdAndDelete(req.params.id)
