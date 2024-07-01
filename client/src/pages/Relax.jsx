@@ -131,16 +131,21 @@ const Relax = () => {
   }, [id])
   
 
-  const handleadminfirst = () => {
-    toast.info("We're building this section, you must wait for around a year to use this feature! Oh! Damn.", {
-      position: "top-right",
-      autoClose: 12000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+  const handleadminfirst = async () => {
+    try {
+      console.log("still in development mode!")
+    } catch (err) {
+      console.log(err)
+      toast.error("May be, try again after some time!", {
+        position: "top-right",
+        autoClose: 12000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
   }
 
   const toggleCreateBlog = () => {
@@ -296,7 +301,7 @@ const Relax = () => {
                   Admin Features
                 </h2>
                 <div className="flex gap-5 items-center content-center justify-center">
-                  <button className={`${isDarkMode ? "text-slate-200 bg-sky-600 p-2 rounded-md hover:bg-sky-700" : "p-2 rounded-md bg-gray-400 text-white"}`} onClick={() => handleadminfirst()}>View all accounts</button>
+                  <button className={`${isDarkMode ? "text-slate-200 bg-sky-600 p-2 rounded-md hover:bg-sky-700" : "p-2 rounded-md bg-gray-400 text-white"}`} onClick={() => handleadminfirst()}>View admin portal</button>
                 </div>
               </div>
             </div>
