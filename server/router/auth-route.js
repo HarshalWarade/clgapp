@@ -35,6 +35,7 @@ router.route('/like/:id').post(authMiddleware, authController.like)
 router.route('/likescount/:id').get(authMiddleware, authController.likescount)
 router.route('/followingblogs').get(authMiddleware, authController.followingblogs)
 router.route('/whoisauthor/:id').get(authMiddleware, authController.whoisauthor)
+router.route('/updation').post(authMiddleware, authController.updation)
 
 // ************************* REMOVE IN PRODUCTION >>> STRICT WARNING !!! **************************
 router.route('/delabl').get(authMiddleware, authController.delabl)

@@ -1,6 +1,11 @@
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 
+const profileViewSchema = new mongoose.Schema({
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'USER' },
+    timestamp: { type: Date, default: Date.now }
+});
+
 const featuredSchema = new mongoose.Schema({
     imageUrl: {
         type: String,
@@ -81,7 +86,8 @@ const userSchema = new mongoose.Schema({
         type: [String],
         default: [],
     },
-    featured: [featuredSchema]
+    featured: [featuredSchema],
+    profileViews: [profileViewSchema]
 }, { timestamps: true })
 
 // jsonwebtoken -> storing in cookies

@@ -164,18 +164,69 @@ const getallusers = async (req, res) => {
   }
 }
 
+// const viewprofile = async (req, res) => {
+//   try {
+//     const userID = req.params.id
+//     const foundUser = await User.findById(userID)
+//     const currentUser = req.user._id
+
+//     console.log(currentUser)
+    
+//     const existingView = foundUser.profileViews.find(view => view.userId.toString() === currentUser)
+//     if (existingView) {
+//       existingView.timestamp = new Date()
+//     } else {
+//       foundUser.profileViews.push({ userId: currentUser })
+//     }
+
+    
+//     if (!foundUser) {
+//       return res.status(500).json({ msg: "User not found" })
+//     }
+//     // await user.save()
+//     return res.status(200).json({ data: foundUser })
+//   } catch (err) {
+//     return res.status(500).json({ msg: err })
+//   }
+// }
+
+
 const viewprofile = async (req, res) => {
   try {
     const userID = req.params.id
     const foundUser = await User.findById(userID)
+
     if (!foundUser) {
-      return res.status(500).json({ msg: "User not found" })
+      // console.log(`User with ID ${userID} not found`)
+      return res.status(404).json({ msg: "User not found" })
     }
+
+    const currentUser = req.user._id
+    // console.log(`Current user: ${currentUser}`)
+
+    const existingView = foundUser.profileViews.find(i => i.userId.toString() === currentUser.toString())
+    
+    if (existingView) {
+      existingView.timestamp = new Date()
+
+      // console.log(`Updated existing view for user ${currentUser}`)
+    } else {
+      foundUser.profileViews.push({ userId: currentUser })
+      // console.log(`Added new view for user ${currentUser}`)
+    }
+
+    await foundUser.save()
+    console.log(`User ${userID} profile updated successfully`)
+
     return res.status(200).json({ data: foundUser })
   } catch (err) {
-    return res.status(500).json({ msg: err })
+    console.error('Error updating profile views:', err.message)
+    return res.status(500).json({ msg: err.message })
   }
 }
+
+
+
 
 const getBlogsOfUser = async (req, res) => {
   const userId = req.params.id
@@ -457,23 +508,23 @@ const likescount = async (req, res) => {
 
 const followingblogs = async (req, res) => {
   try {
-    const user = req.user;
+    const user = req.user
 
-    const followingUsers = await User.find({ _id: { $in: user.followings } });
+    const followingUsers = await User.find({ _id: { $in: user.followings } })
     
     if (!followingUsers || followingUsers.length === 0) {
-      return res.status(400).json({ message: "You're not following any user!" });
+      return res.status(400).json({ message: "You're not following any user!" })
     }
 
-    const followingUserIds = followingUsers.map(user => user._id);
-    const blogs = await Blog.find({ author: { $in: followingUserIds } });
+    const followingUserIds = followingUsers.map(user => user._id)
+    const blogs = await Blog.find({ author: { $in: followingUserIds } })
 
-    return res.status(200).json({ data: blogs });
+    return res.status(200).json({ data: blogs })
   } catch (err) {
-    console.log(`Error in followingblogs -> backend => ${err}`);
-    return res.status(500).json({ message: "Server error, fixing it soon, relax!" });
+    console.log(`Error in followingblogs -> backend => ${err}`)
+    return res.status(500).json({ message: "Server error, fixing it soon, relax!" })
   }
-};
+}
 
 const whoisauthor = async (req, res) => {
   try {
@@ -535,6 +586,20 @@ const delBlog = async (req, res) => {
 }
 
 
+const updation = async (req, res) => {
+  try {
+    await User.updateMany(
+      { profileViews: { $exists: false } },
+      { $set: { profileViews: [] } }
+    )
+    console.log('All users updated successfully')
+    return res.status(200).json({msg: "Users updated"})
+  } catch (err) {
+    console.log("Error at updation api backend: ", err)
+    return res.status(400).json({msg: "Server Error, resolving..."})
+  }
+}
+
 
 module.exports = {
   home,
@@ -563,5 +628,6 @@ module.exports = {
   like,
   likescount,
   followingblogs,
-  whoisauthor
+  whoisauthor,
+  updation
 }
