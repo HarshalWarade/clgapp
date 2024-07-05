@@ -26,6 +26,8 @@ const errorMiddleware = require('./middleware/error-middleware')
 app.use("/api/auth", authRoute)
 app.use("/api/form", contactRoute)
 
+// some comment
+
 
 app.get('/', async (req, res) => {
     return res.status(200).send('this is a response!')
