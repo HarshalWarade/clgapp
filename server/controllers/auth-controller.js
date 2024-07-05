@@ -168,15 +168,13 @@ const getallusers = async (req, res) => {
 const viewprofile = async (req, res) => {
   const userID = req.params.id
   const foundUser = await User.findById(userID)
-  if(userID != req.user._id) {
-    try {
-  
-      if (!foundUser) {
-        return res.status(404).json({ msg: "User not found" })
-      }
-  
+  try {
+    if (!foundUser) {
+      return res.status(404).json({ msg: "User not found" })
+    }
+    if(userID != req.user._id) {
       const currentUser = req.user._id
-  
+
       const existingView = foundUser.profileViews.find(i => i.userId.toString() === currentUser.toString())
       
       if (existingView) {
@@ -186,13 +184,12 @@ const viewprofile = async (req, res) => {
       }
   
       await foundUser.save()
-      console.log(`User ${userID} profile updated successfully`)
-  
-      return res.status(200).json({ data: foundUser })
-    } catch (err) {
-      console.error('Error updating profile views:', err.message)
-      return res.status(500).json({ msg: err.message })
     }
+
+    return res.status(200).json({ data: foundUser })
+  } catch (err) {
+    console.error('Error updating profile views:', err.message)
+    return res.status(500).json({ msg: err.message })
   }
 }
 
@@ -402,8 +399,7 @@ const getfollowinglength = async (req, res) => {
 const addfeatured = async (req, res) => {
   const userIDdata = req.params.id
   const { imageUrl, heading, content, visitLink } = req.body
-  console.log(userIDdata)
-  console.log(req.body)
+
   try {
       const user = await User.findById(userIDdata)
       if (!user) {

@@ -430,7 +430,7 @@ const Relax = () => {
             </div>
           </div>
         </div>
-
+        
         <div
           className={`flex shadow-sm flex-col gap-3 mb-5 mt-5 px-6 py-9 rounded-md ${
             isDarkMode ? `` : `bg-white`
