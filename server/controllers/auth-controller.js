@@ -10,6 +10,7 @@ const home = async (req, res) => {
     console.log(error)
   }
 }
+
 const requestcontact = async (req, res) => {
   try {
     const { username, email, message } = req.body
@@ -164,64 +165,34 @@ const getallusers = async (req, res) => {
   }
 }
 
-// const viewprofile = async (req, res) => {
-//   try {
-//     const userID = req.params.id
-//     const foundUser = await User.findById(userID)
-//     const currentUser = req.user._id
-
-//     console.log(currentUser)
-    
-//     const existingView = foundUser.profileViews.find(view => view.userId.toString() === currentUser)
-//     if (existingView) {
-//       existingView.timestamp = new Date()
-//     } else {
-//       foundUser.profileViews.push({ userId: currentUser })
-//     }
-
-    
-//     if (!foundUser) {
-//       return res.status(500).json({ msg: "User not found" })
-//     }
-//     // await user.save()
-//     return res.status(200).json({ data: foundUser })
-//   } catch (err) {
-//     return res.status(500).json({ msg: err })
-//   }
-// }
-
-
 const viewprofile = async (req, res) => {
-  try {
-    const userID = req.params.id
-    const foundUser = await User.findById(userID)
-
-    if (!foundUser) {
-      // console.log(`User with ID ${userID} not found`)
-      return res.status(404).json({ msg: "User not found" })
+  const userID = req.params.id
+  const foundUser = await User.findById(userID)
+  if(userID != req.user._id) {
+    try {
+  
+      if (!foundUser) {
+        return res.status(404).json({ msg: "User not found" })
+      }
+  
+      const currentUser = req.user._id
+  
+      const existingView = foundUser.profileViews.find(i => i.userId.toString() === currentUser.toString())
+      
+      if (existingView) {
+        existingView.timestamp = new Date()
+      } else {
+        foundUser.profileViews.push({ userId: currentUser })
+      }
+  
+      await foundUser.save()
+      console.log(`User ${userID} profile updated successfully`)
+  
+      return res.status(200).json({ data: foundUser })
+    } catch (err) {
+      console.error('Error updating profile views:', err.message)
+      return res.status(500).json({ msg: err.message })
     }
-
-    const currentUser = req.user._id
-    // console.log(`Current user: ${currentUser}`)
-
-    const existingView = foundUser.profileViews.find(i => i.userId.toString() === currentUser.toString())
-    
-    if (existingView) {
-      existingView.timestamp = new Date()
-
-      // console.log(`Updated existing view for user ${currentUser}`)
-    } else {
-      foundUser.profileViews.push({ userId: currentUser })
-      // console.log(`Added new view for user ${currentUser}`)
-    }
-
-    await foundUser.save()
-    console.log(`User ${userID} profile updated successfully`)
-
-    return res.status(200).json({ data: foundUser })
-  } catch (err) {
-    console.error('Error updating profile views:', err.message)
-    return res.status(500).json({ msg: err.message })
   }
 }
 
@@ -369,6 +340,7 @@ const isfollowing = async (req, res) => {
     console.log(`Error at isfollowing function: ${err}`)
   }
 }
+
 const remyaccount = async (req, res) => {
   try {
     await User.findByIdAndDelete(req.params.id)
@@ -377,7 +349,6 @@ const remyaccount = async (req, res) => {
     console.log(err)
     return res.status(500).json({message: "Failed to delete user (B)"})
   }
-  
 }
 
 // temp functions -> 2
@@ -387,7 +358,7 @@ const myfollowerslength = async (req, res) => {
     const userId = req.user._id
     const findUser = await User.findById(userId)
     if(!findUser) {
-      return res.status(400).json({message: "Userxcvxc not found!"})
+      return res.status(400).json({message: "User not found!"})
     }
     const followersSize = findUser.followers.length
     console.log("Backend: ", followersSize)
@@ -415,13 +386,11 @@ const getfollowerslength = async (req, res) => {
 const getfollowinglength = async (req, res) => {
   try {
     const userId = req.params.id
-    // console.log(userId)
     const user = await User.findById(userId)
     if(!user) {
       return res.status(404).json({message: "User not found!"})
     }
     const followingSize = user.followings.length
-    // console.log(followingSize)
     return res.status(200).json({data: followingSize})
   } catch (err) {
     return res.status(500).json({message: "Failed to get following count!"})
@@ -498,7 +467,6 @@ const likescount = async (req, res) => {
     if(!currBlog) {
       return res.status(400).json({message: "Blog does not exists!"})
     }
-    // console.log(currBlog.likes)
     return res.status(200).json({data: currBlog.likes.length})
   } catch (err) {
     console.log("Failed to get the like counts: ", err)
@@ -537,7 +505,6 @@ const whoisauthor = async (req, res) => {
     const thatAuthorUsername = thatAuthorData.username
 
 
-    // console.log("author back: ", thatAuthorUsername)
     return res.status(200).json({message: thatAuthorUsername, authorId: thatAuthorId})
   } catch (err) {
     console.log("Error at backend, whoisauthor, ", err)
@@ -562,7 +529,6 @@ const delabl = async (req, res) => {
 const delBlog = async (req, res) => {
   try {
     const blogId = req.params.id
-    // console.log(blogId)
 
     const blog = await Blog.findById(blogId)
     console.log(blog)
