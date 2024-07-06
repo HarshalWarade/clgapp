@@ -562,6 +562,16 @@ const updation = async (req, res) => {
   }
 }
 
+const getprofileviewers = async (req, res) => {
+  try {
+    const data = req.user.profileViews
+    return res.status(200).json({msg: data})
+  } catch (err) {
+    console.log("failed to get profile viewers: backend", err)
+    return res.status(400).json({msg: "Failed to fetch profile views"})
+  }
+}
+
 
 module.exports = {
   home,
@@ -591,5 +601,6 @@ module.exports = {
   likescount,
   followingblogs,
   whoisauthor,
-  updation
+  updation,
+  getprofileviewers
 }

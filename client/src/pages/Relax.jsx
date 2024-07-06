@@ -1,25 +1,26 @@
-import React, { useContext, useState, useEffect } from "react";
-import { useAuth } from "../store/auth";
-import Footer from "../components/Footer";
-import { NavLink } from "react-router-dom";
-import { DarkModeContext } from "../context/DarkModeContext";
-import Navbar from "../components/Navbar";
-import "react-quill/dist/quill.snow.css";
-import TextEditor from "../components/TextEditor";
-import PostCount from "../components/PostCount";
-import FetchPosts from "../components/FetchPosts";
-import Featured from "./Featured";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React, { useContext, useState, useEffect } from "react"
+import { useAuth } from "../store/auth"
+import Footer from "../components/Footer"
+import { NavLink } from "react-router-dom"
+import { DarkModeContext } from "../context/DarkModeContext"
+import Navbar from "../components/Navbar"
+import "react-quill/dist/quill.snow.css"
+import TextEditor from "../components/TextEditor"
+import PostCount from "../components/PostCount"
+import FetchPosts from "../components/FetchPosts"
+import Featured from "./Featured"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
-import Comment from "./Comment";
-import AboutLine from "../components/AboutLine";
-// import0om "../components0// import FollowingsLength from "../components/FollowingsLength";
-// import M0om "../components/M0
+import Comment from "./Comment"
+import AboutLine from "../components/AboutLine"
+import ProfileView from "../components/ProfileView"
+import StripCard from "../components/StripCard"
+
 const Relax = () => {
   // console.log(user)
   // *********************** MUST DELETE IN PRODUCTION *************************
-  const { token } = useAuth();
+  const { token } = useAuth()
 
   const delAccount = async () => {
     const response = await fetch(
@@ -31,7 +32,7 @@ const Relax = () => {
           "Content-Type": "application/json",
         },
       }
-    );
+    )
     if (response.ok) {
       toast.success("Please fill this form to continue", {
         position: "top-right",
@@ -41,18 +42,18 @@ const Relax = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-      });
+      })
     } else {
-      console.log("Failed to delete account!");
+      console.log("Failed to delete account!")
     }
-  };
+  }
 
   // ****************************************************************************************
 
-  const [createBlog, setCreateBlog] = useState(false);
-  const { user } = useAuth();
-  const { isDarkMode } = useContext(DarkModeContext);
-  const [showFeatured, setShowFeatured] = useState(false);
+  const [createBlog, setCreateBlog] = useState(false)
+  const { user } = useAuth()
+  const { isDarkMode } = useContext(DarkModeContext)
+  const [showFeatured, setShowFeatured] = useState(false)
 
   let id = user._id
   // console.log(id)
@@ -62,66 +63,72 @@ const Relax = () => {
 
   const getFollowersLength = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/auth/getfollowerslength/${id}`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `http://localhost:3000/api/auth/getfollowerslength/${id}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
 
       if (response.ok) {
         console.log("Green Flag from st 1")
       } else {
-        throw new Error('Failed to fetch followers count');
-      }
-
-      const data = await response.json();
-
-      if (!data || typeof data.data !== 'number') {
-        throw new Error('Invalid response format');
-      }
-
-      const followersCount = data.data;
-      // console.log('Followers count:', followersCount);
-      setFollowersSize(followersCount);
-    } catch (error) {
-      console.error('Error fetching followers count:', error);
-      // alert("Close the application, it's crashing!");
-    }
-  }
-
-  useEffect(() => {
-    getFollowersLength();
-  }, [id]);
-
-  const getfollowinglength = async () => {
-    try {
-      const response = await fetch(`http://localhost:3000/api/auth/getfollowinglength/${id}`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      })
-
-      if (response.ok) {
-        console.log("Green flag from st 2")
-      } else {
-        throw new Error('Failed to fetch followings count')
+        throw new Error("Failed to fetch followers count")
       }
 
       const data = await response.json()
 
-      if (!data || typeof data.data !== 'number') {
-        throw new Error('Invalid response format')
+      if (!data || typeof data.data !== "number") {
+        throw new Error("Invalid response format")
+      }
+
+      const followersCount = data.data
+      // console.log('Followers count:', followersCount)
+      setFollowersSize(followersCount)
+    } catch (error) {
+      console.error("Error fetching followers count:", error)
+      // alert("Close the application, it's crashing!")
+    }
+  }
+
+  useEffect(() => {
+    getFollowersLength()
+  }, [id])
+
+  const getfollowinglength = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/auth/getfollowinglength/${id}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+
+      if (response.ok) {
+        console.log("Green flag from st 2")
+      } else {
+        throw new Error("Failed to fetch followings count")
+      }
+
+      const data = await response.json()
+
+      if (!data || typeof data.data !== "number") {
+        throw new Error("Invalid response format")
       }
 
       const followingsCount = data.data
       // console.log('Followers count:', followingsCount)
       setFollowingsSize(followingsCount)
     } catch (error) {
-      console.error('Error fetching followings count:', error)
+      console.error("Error fetching followings count:", error)
       // alert("Close the application, it's crashing!")
     }
   }
@@ -129,7 +136,6 @@ const Relax = () => {
   useEffect(() => {
     getfollowinglength()
   }, [id])
-  
 
   const handleadminfirst = async () => {
     try {
@@ -144,17 +150,17 @@ const Relax = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-      });
+      })
     }
   }
 
   const toggleCreateBlog = () => {
-    setCreateBlog(!createBlog);
-  };
+    setCreateBlog(!createBlog)
+  }
 
   const closeDialogue = () => {
-    setCreateBlog(false);
-  };
+    setCreateBlog(false)
+  }
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -162,16 +168,16 @@ const Relax = () => {
         createBlog &&
         !document.getElementById("text-editor").contains(event.target)
       ) {
-        setCreateBlog(false);
+        setCreateBlog(false)
       }
-    };
+    }
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside)
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [createBlog]);
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [createBlog])
 
   return (
     <>
@@ -215,12 +221,18 @@ const Relax = () => {
                 <NavLink
                   className={`text-blue-500 font-semibold hover:underline`}
                 >
-                <p className="flex flex-col items-center justify-center content-center"><b className={`text-2xl font-normal`}>{followersSize}</b> followers</p>
+                  <p className="flex flex-col items-center justify-center content-center">
+                    <b className={`text-2xl font-normal`}>{followersSize}</b>{" "}
+                    followers
+                  </p>
                 </NavLink>
                 <NavLink
                   className={`text-blue-500 font-semibold hover:underline`}
                 >
-                <p className="flex flex-col items-center justify-center content-center"><b className={`text-2xl font-normal`}>{followingsSize}</b> followings</p>
+                  <p className="flex flex-col items-center justify-center content-center">
+                    <b className={`text-2xl font-normal`}>{followingsSize}</b>{" "}
+                    followings
+                  </p>
                 </NavLink>
               </div>
               <div className="relative flex items-center content-center gap-12">
@@ -301,7 +313,16 @@ const Relax = () => {
                   Admin Features
                 </h2>
                 <div className="flex gap-5 items-center content-center justify-center">
-                  <button className={`${isDarkMode ? "text-slate-200 bg-sky-600 p-2 rounded-md hover:bg-sky-700" : "p-2 rounded-md bg-gray-400 text-white"}`} onClick={() => handleadminfirst()}>View admin portal</button>
+                  <button
+                    className={`${
+                      isDarkMode
+                        ? "text-slate-200 bg-sky-600 p-2 rounded-md hover:bg-sky-700"
+                        : "p-2 rounded-md bg-gray-400 text-white"
+                    }`}
+                    onClick={() => handleadminfirst()}
+                  >
+                    View admin portal
+                  </button>
                 </div>
               </div>
             </div>
@@ -403,7 +424,9 @@ const Relax = () => {
               isDarkMode ? `text-slate-300` : `text-slate-500`
             }`}
           >
-            <p><AboutLine /></p>
+            <p>
+              <AboutLine />
+            </p>
           </div>
           <div
             className={`border flex flex-col gap-5 mt-2 rounded-md text-slate-400 p-5 ${
@@ -430,7 +453,7 @@ const Relax = () => {
             </div>
           </div>
         </div>
-        
+
         <div
           className={`flex shadow-sm flex-col gap-3 mb-5 mt-5 px-6 py-9 rounded-md ${
             isDarkMode ? `` : `bg-white`
@@ -457,6 +480,9 @@ const Relax = () => {
             </div>
           </div>
           <div className="text-slate-200">
+            <div className="py-5">
+              <StripCard />
+            </div>
             {user.featured ? (
               <div className="flex flex-wrap gap-5">
                 {user.featured.map((item, index) => (
@@ -548,6 +574,10 @@ const Relax = () => {
         </div>
       </div>
 
+      <div>
+        <ProfileView />
+      </div>
+
       <Footer />
 
       <ToastContainer
@@ -556,7 +586,7 @@ const Relax = () => {
         hideProgressBar={false}
       />
     </>
-  );
-};
+  )
+}
 
-export default Relax;
+export default Relax

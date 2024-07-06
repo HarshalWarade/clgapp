@@ -35,7 +35,6 @@ const FollowingBlogs = () => {
           newBlog => !prevBlogs.some(existingBlog => existingBlog._id === newBlog._id)
         );
         const combinedBlogs = [...prevBlogs, ...newBlogs];
-        // Sort blogs by date in descending order
         combinedBlogs.sort((a, b) => new Date(b.blogCreatedAt) - new Date(a.blogCreatedAt));
         return combinedBlogs;
       });
