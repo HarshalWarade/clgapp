@@ -53,7 +53,7 @@ const SettingsPage = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `http://localhost:3000/api/auth/settings/${userId}`,
+        `http://blogapp-pi-six.vercel.app/api/auth/settings/${userId}`,
         {
           method: "PUT",
           headers: {

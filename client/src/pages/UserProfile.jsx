@@ -25,7 +25,7 @@ const UserProfile = () => {
 
   const checkFollowingStatus = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/auth/isfollowing/${id}`, {
+      const response = await fetch(`http://blogapp-pi-six.vercel.app/api/auth/isfollowing/${id}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -49,7 +49,7 @@ const UserProfile = () => {
 
   const getFollowersLength = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/auth/getfollowerslength/${id}`, {
+      const response = await fetch(`http://blogapp-pi-six.vercel.app/api/auth/getfollowerslength/${id}`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -82,7 +82,7 @@ const UserProfile = () => {
 
   const getfollowinglength = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/auth/getfollowinglength/${id}`, {
+      const response = await fetch(`http://blogapp-pi-six.vercel.app/api/auth/getfollowinglength/${id}`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -132,7 +132,7 @@ const UserProfile = () => {
   const handleFollow = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/auth/follow/${id}`,
+        `http://blogapp-pi-six.vercel.app/api/auth/follow/${id}`,
         {
           method: "GET",
           headers: {
@@ -180,7 +180,7 @@ const UserProfile = () => {
   const handleUnfollow = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/auth/unfollow/${id}`,
+        `http://blogapp-pi-six.vercel.app/api/auth/unfollow/${id}`,
         {
           method: "GET",
           headers: {
@@ -233,7 +233,7 @@ const UserProfile = () => {
     const fetchData = async () => {
       try {
         const profileResponse = await fetch(
-          `http://localhost:3000/api/auth/viewprofile/${id}`,
+          `http://blogapp-pi-six.vercel.app/api/auth/viewprofile/${id}`,
           {
             method: "GET",
             headers: {
@@ -251,7 +251,7 @@ const UserProfile = () => {
         }
 
         const postsResponse = await fetch(
-          `http://localhost:3000/api/auth/getblogs/${id}`,
+          `http://blogapp-pi-six.vercel.app/api/auth/getblogs/${id}`,
           {
             method: "GET",
             headers: {

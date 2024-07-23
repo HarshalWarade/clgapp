@@ -7,7 +7,7 @@ const PostCount = () => {
   useEffect(() => {
     const fetchPostCount = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/auth/getpostcount', {
+        const response = await fetch('http://blogapp-pi-six.vercel.app/api/auth/getpostcount', {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,

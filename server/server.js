@@ -6,7 +6,7 @@ const app = express()
 const port = 3000
 
 const corsOption = {
-    origin: 'http://localhost:5173',
+    origin: 'http://blogapp-pi-six.vercel.app',
     methods: "GET, PUT, POST, DELETE, PATCH, HEAD",
     credentials: true
 }

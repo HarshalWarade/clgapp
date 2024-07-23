@@ -22,7 +22,7 @@ const Featured = () => {
   const handleAddFeatured = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/auth/addfeatured/${user._id}`,
+        `http://blogapp-pi-six.vercel.app/api/auth/addfeatured/${user._id}`,
         {
           method: "POST",
           headers: {

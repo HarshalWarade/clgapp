@@ -30,7 +30,7 @@ const TextEditor = () => {
 
     const token = localStorage.getItem("token")
     try {
-      const response = await fetch("http://localhost:3000/api/auth/postblog", {
+      const response = await fetch("http://blogapp-pi-six.vercel.app/api/auth/postblog", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

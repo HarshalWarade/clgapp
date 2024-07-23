@@ -13,7 +13,7 @@ const StripCard = (prop) => {
   const whoisauthor = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/auth/whoisthis/${prop.userId}`,
+        `http://blogapp-pi-six.vercel.app/api/auth/whoisthis/${prop.userId}`,
         {
           method: "GET",
           headers: {

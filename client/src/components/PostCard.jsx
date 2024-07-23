@@ -18,7 +18,7 @@ const PostCard = (prop) => {
   const handleLikePost = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/auth/like/${prop.postId}`,
+        `http://blogapp-pi-six.vercel.app/api/auth/like/${prop.postId}`,
         {
           method: "POST",
           headers: {
@@ -40,7 +40,7 @@ const PostCard = (prop) => {
   const likesCount = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/auth/likescount/${prop.postId}`,
+        `http://blogapp-pi-six.vercel.app/api/auth/likescount/${prop.postId}`,
         {
           method: "GET",
           headers: {
@@ -65,7 +65,7 @@ const PostCard = (prop) => {
   const whoisauthor = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/auth/whoisauthor/${prop.postId}`,
+        `http://blogapp-pi-six.vercel.app/api/auth/whoisauthor/${prop.postId}`,
         {
           method: "GET",
           headers: {
