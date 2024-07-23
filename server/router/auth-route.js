@@ -37,6 +37,7 @@ router.route('/followingblogs').get(authMiddleware, authController.followingblog
 router.route('/whoisauthor/:id').get(authMiddleware, authController.whoisauthor)
 router.route('/updation').post(authMiddleware, authController.updation)
 router.route('/getprofileviewers').get(authMiddleware, authController.getprofileviewers)
+router.route('/whoisthis/:id').get(authMiddleware, authController.whoisthis)
 
 // ************************* REMOVE IN PRODUCTION >>> STRICT WARNING !!! **************************
 router.route('/delabl').get(authMiddleware, authController.delabl)

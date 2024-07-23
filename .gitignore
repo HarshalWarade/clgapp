@@ -1,5 +1,3 @@
-# Ignore all files with the name .env
 **/config.env
 
-# Ignore all node_modules folders
 **/node_modules/

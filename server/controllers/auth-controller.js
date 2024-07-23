@@ -76,9 +76,7 @@ const register = async (req, res) => {
       password: hash_password,
     })
 
-    return res
-      .status(201)
-      .json({
+    return res.status(201).json({
         msg: "Registration Successful",
         token: await createdUser.generateToken(),
         userId: createdUser._id.toString(),
@@ -504,9 +502,22 @@ const whoisauthor = async (req, res) => {
     return res.status(200).json({message: thatAuthorUsername, authorId: thatAuthorId})
   } catch (err) {
     console.log("Error at backend, whoisauthor, ", err)
-    return res.status(400).json({message: "Server error, we're fixing it hold on, or you may report through contact us page!"})
+    return res.status(400).json({message: err})
   }
 }
+
+const whoisthis = async (req, res) => {
+  try {
+    const userId = req.params.id
+    const userDetails = await User.findById(userId)
+    return res.status(200).json({data: userDetails})
+  } catch (err) {
+    console.log("Error at whoisthis => Backend: ", err)
+    return res.status(400).json({msg: err})
+  }
+}
+
+
 
 
 // ************ STRICT WARNING >>> DELETE BEFORE PRODUCTION ****************************
@@ -602,5 +613,6 @@ module.exports = {
   followingblogs,
   whoisauthor,
   updation,
-  getprofileviewers
+  getprofileviewers,
+  whoisthis
 }
