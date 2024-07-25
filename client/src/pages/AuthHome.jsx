@@ -18,7 +18,7 @@ const AuthHome = () => {
   const getfollowinglength = async () => {
     try {
       const response = await fetch(
-        `http://blogapp-pi-six.vercel.app/api/auth/getfollowinglength/${id}`,
+        `http://localhost:3000/api/auth/getfollowinglength/${id}`,
         {
           method: "GET",
           headers: {

@@ -27,7 +27,7 @@ const FetchPosts = () => {
 
   const fetchBlogs = async () => {
     try {
-      const response = await fetch('http://blogapp-pi-six.vercel.app/api/auth/getblogs', {
+      const response = await fetch('http://localhost:3000/api/auth/getblogs', {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -53,7 +53,7 @@ const FetchPosts = () => {
   const handleEdit = async (blogId) => {
     setEditingBlogId(blogId);
     try {
-      const response = await fetch(`http://blogapp-pi-six.vercel.app/api/auth/getblog/${blogId}`, {
+      const response = await fetch(`http://localhost:3000/api/auth/getblog/${blogId}`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -74,7 +74,7 @@ const FetchPosts = () => {
 
   const handleSaveEdit = async () => {
     try {
-      const response = await fetch(`http://blogapp-pi-six.vercel.app/api/auth/editblog/${editingBlogId}`, {
+      const response = await fetch(`http://localhost:3000/api/auth/editblog/${editingBlogId}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -98,7 +98,7 @@ const FetchPosts = () => {
   const handleDelete = async (blogId) => {
     if (window.confirm('Are you sure you want to delete this blog?')) {
       try {
-        const response = await fetch(`http://blogapp-pi-six.vercel.app/api/auth/deleteblog/${blogId}`, {
+        const response = await fetch(`http://localhost:3000/api/auth/deleteblog/${blogId}`, {
           method: 'DELETE',
           headers: {
             Authorization: `Bearer ${token}`,

@@ -15,7 +15,7 @@ const FollowingBlogs = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://blogapp-pi-six.vercel.app/api/auth/followingblogs?page=${page}`,
+        `http://localhost:3000/api/auth/followingblogs?page=${page}`,
         {
           method: "GET",
           headers: {

@@ -36,7 +36,7 @@ const ProfileView = () => {
   const fetchViewers = async () => {
     try {
       const response = await fetch(
-        "http://blogapp-pi-six.vercel.app/api/auth/getprofileviewers",
+        "http://localhost:3000/api/auth/getprofileviewers",
         {
           method: "GET",
           headers: {

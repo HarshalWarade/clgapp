@@ -24,7 +24,7 @@ const Relax = () => {
 
   const delAccount = async () => {
     const response = await fetch(
-      `http://blogapp-pi-six.vercel.app/api/auth/remyaccount/${user._id}`,
+      `http://localhost:3000/api/auth/remyaccount/${user._id}`,
       {
         method: "GET",
         headers: {
@@ -64,7 +64,7 @@ const Relax = () => {
   const getFollowersLength = async () => {
     try {
       const response = await fetch(
-        `http://blogapp-pi-six.vercel.app/api/auth/getfollowerslength/${id}`,
+        `http://localhost:3000/api/auth/getfollowerslength/${id}`,
         {
           method: "GET",
           headers: {
@@ -102,7 +102,7 @@ const Relax = () => {
   const getfollowinglength = async () => {
     try {
       const response = await fetch(
-        `http://blogapp-pi-six.vercel.app/api/auth/getfollowinglength/${id}`,
+        `http://localhost:3000/api/auth/getfollowinglength/${id}`,
         {
           method: "GET",
           headers: {

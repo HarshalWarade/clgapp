@@ -54,7 +54,7 @@ const ContactUs = () => {
     try {
       if (isLoggedIn) {
         const response = await fetch(
-          `http://blogapp-pi-six.vercel.app/api/auth/requestcontact`,
+          `http://localhost:3000/api/auth/requestcontact`,
           {
             method: "POST",
             headers: {

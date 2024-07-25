@@ -18,7 +18,7 @@ const Explore = () => {
     const fetchUsers = async () => {
       try {
         const response = await fetch(
-          `http://blogapp-pi-six.vercel.app/api/auth/getallusers`,
+          `http://localhost:3000/api/auth/getallusers`,
           {
             method: "GET",
             headers: {
@@ -46,7 +46,7 @@ const Explore = () => {
 
   const handleRedirect = async (userID) => {
     const response = await fetch(
-      `http://blogapp-pi-six.vercel.app/api/auth/viewprofile/${userID}`,
+      `http://localhost:3000/api/auth/viewprofile/${userID}`,
       {
         method: "GET",
         headers: {
