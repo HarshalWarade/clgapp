@@ -44,4 +44,6 @@ connectDB().then(() => {
             console.log(`Listening on port ${port}`)
         }
     })
+}).catch((err) => {
+    console.log(err)
 })

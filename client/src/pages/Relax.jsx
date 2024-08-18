@@ -12,13 +12,10 @@ import Featured from "./Featured"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
-import Comment from "./Comment"
 import AboutLine from "../components/AboutLine"
-import ProfileView from "../components/ProfileView"
-import StripCard from "../components/StripCard"
+import ProfileViewCounts from "../components/ProfileViewCounts"
 
 const Relax = () => {
-  // console.log(user)
   // *********************** MUST DELETE IN PRODUCTION *************************
   const { token } = useAuth()
 
@@ -56,7 +53,6 @@ const Relax = () => {
   const [showFeatured, setShowFeatured] = useState(false)
 
   let id = user._id
-  // console.log(id)
 
   const [followersSize, setFollowersSize] = useState(0)
   const [followingsSize, setFollowingsSize] = useState(0)
@@ -87,11 +83,9 @@ const Relax = () => {
       }
 
       const followersCount = data.data
-      // console.log('Followers count:', followersCount)
       setFollowersSize(followersCount)
     } catch (error) {
       console.error("Error fetching followers count:", error)
-      // alert("Close the application, it's crashing!")
     }
   }
 
@@ -252,18 +246,7 @@ const Relax = () => {
                 >
                   Public View
                 </NavLink>
-                {/* <NavLink
-                  className={`border border-sky-600/75 text-sky-600/75 py-2 px-3 flex items-center justify-center rounded-full ${
-                    isDarkMode
-                      ? `hover:bg-sky-500/75 hover:text-white`
-                      : `hover:bg-sky-100/75`
-                  }`}
-                  to={`/explore`}
-                >
-                  Explore
-                </NavLink>
-                <NavLink className={`bg-red-600 rounded-md p-2`}>Get Followers Count</NavLink> */}
-                {/* {user.isadmin ? "" : <button onClick={delAccount}>Del Account</button>} */}
+                
               </div>
             </div>
           </div>
@@ -359,7 +342,7 @@ const Relax = () => {
                   isDarkMode ? `text-slate-200` : `text-slate-700`
                 }`}
               >
-                190 profile views
+                <p className="flex gap-2"><ProfileViewCounts /> profile views</p>
               </NavLink>
               <p
                 className={`${
@@ -480,9 +463,9 @@ const Relax = () => {
             </div>
           </div>
           <div className="text-slate-200">
-            <div className="py-5">
+            {/* <div className="py-5">
               <StripCard />
-            </div>
+            </div> */}
             {user.featured ? (
               <div className="flex flex-wrap gap-5">
                 {user.featured.map((item, index) => (
@@ -572,10 +555,6 @@ const Relax = () => {
             <TextEditor closeDialogue={closeDialogue} />
           </div>
         </div>
-      </div>
-
-      <div>
-        <ProfileView />
       </div>
 
       <Footer />

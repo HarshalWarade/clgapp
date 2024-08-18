@@ -5,7 +5,7 @@ const StripCard = (prop) => {
   const {token} = useAuth()
   const [userName, setUserName] = useState("")
   let totalName = ""
-  let fullName;
+  // let fullName;
   useEffect(() => {
     whoisauthor()
   }, [])
@@ -38,7 +38,7 @@ const StripCard = (prop) => {
 
   return (
     <div className={`border p-1 rounded-md ${isDarkMode ? "" : ""}`}>
-      <p>Total Name: {userName}</p>
+      <p>{userName}</p>
       {prop.times}
     </div>
   )

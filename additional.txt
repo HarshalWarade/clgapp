@@ -1,0 +1,9 @@
+What can I add in my project?
+
+- Skill Gap Analysis - Will be analysing user's skills and the skills that job demands.
+usage: will be putting all the job described skills in an ordered_map and then comparing each skill if it is present in the map or not, if not, then user needs to get that skill to be properly eligible for the job.
+
+- Cultural Fit Assessment
+usage: each comapny would be given a portal to post their required question with answers and their weightage, and user needs to solve that test if it is made compulsory by the company. According the to answers from the user, we would be sending the score of the user to the company, if that candidate is culturally fit for the company or not.
+
+- 

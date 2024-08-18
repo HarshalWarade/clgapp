@@ -583,6 +583,16 @@ const getprofileviewers = async (req, res) => {
   }
 }
 
+const getprofileviewscount = async (req, res) => {
+  try {
+    const data = await req.user.profileViews
+    const len = data.length
+    return res.status(200).json({data: len})
+  } catch (err) {
+    console.log("Error at fetching profile views count -> Backend");
+    return res.status(400).json({msg: "Internal Server Error! Automatically working on it."})
+  }
+}
 
 module.exports = {
   home,
@@ -614,5 +624,6 @@ module.exports = {
   whoisauthor,
   updation,
   getprofileviewers,
-  whoisthis
+  whoisthis,
+  getprofileviewscount
 }
